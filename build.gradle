@@ -227,14 +227,11 @@ dependencies {
     }
 
     compile(group: 'org.springframework', name: 'spring-jdbc', version: '5.2.9.RELEASE')
-    compile(group: 'org.springframework', name: 'spring-aop', version: '5.2.9.RELEASE')
     compile(group: 'org.springframework', name: 'spring-beans', version: '5.2.9.RELEASE')
     compile(group: 'org.springframework', name: 'spring-context', version: '5.2.9.RELEASE')
     compile(group: 'org.springframework', name: 'spring-core', version: '5.2.9.RELEASE')
     compile(group: 'org.springframework', name: 'spring-test', version: '5.2.9.RELEASE')
     compile(group: 'org.springframework', name: 'spring-tx', version: '5.2.9.RELEASE')
-    compile(group: 'org.springframework', name: 'spring-web', version: '5.2.9.RELEASE')
-    compile(group: 'org.springframework', name: 'spring-webmvc', version: '5.2.9.RELEASE')
 
     compile(group: 'uk.gov.hmcts.reform', name: 'properties-volume-spring-boot-starter', version: '0.1.0') {
         exclude group: "org.apache.tomcat.embed", module: "tomcat-embed-websocket"
