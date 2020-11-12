@@ -1,6 +1,6 @@
 dependencies:
   - name: job
-    version: ~0.5.1
+    version: ~0.6.0
     repository: '@hmctspublic'
   - name: postgresql
     version: ~6.3.5
