@@ -1,0 +1,5 @@
+"Story","Title","Result","Date","Stability","Duration (s)"
+"Role assignment batch job integration test","Should get record count from live table","ERROR","2021-02-16T15:01:32.246091Z[Europe/London]","0.0","5.77"
+"Role assignment batch job integration test","Should insert records in history table","ERROR","2021-02-16T15:01:38.072613Z[Europe/London]","0.0","0.02"
+"Role assignment batch job integration test","Should delete live records complex scenario","ERROR","2021-02-16T15:01:38.100318Z[Europe/London]","0.0","0.01"
+"Role assignment batch job integration test","Should delete records from live table","ERROR","2021-02-16T15:01:38.1202Z[Europe/London]","0.0","0.01"
