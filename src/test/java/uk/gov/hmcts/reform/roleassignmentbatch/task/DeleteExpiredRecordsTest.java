@@ -14,7 +14,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.ArgumentMatchers;
@@ -24,6 +23,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.ResultSetExtractor;
 import uk.gov.hmcts.reform.roleassignmentbatch.domain.model.enums.ActorIdType;
@@ -51,11 +51,6 @@ class DeleteExpiredRecordsTest {
 
     private DeleteExpiredRecords sut = new DeleteExpiredRecords(jdbcTemplate, 5);
 
-    @BeforeAll
-    public static void setUp() {
-        //MockitoAnnotations.initMocks(this);
-    }
-
     @Test
     void execute() throws IOException {
         Mockito.when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class)))
@@ -71,7 +66,7 @@ class DeleteExpiredRecordsTest {
     }
 
     @Test
-    void executeThrowsException() throws IOException {
+    void executeThrowsNullPointerException() throws IOException {
         Mockito.when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class)))
                .thenThrow(NullPointerException.class);
 
@@ -83,6 +78,21 @@ class DeleteExpiredRecordsTest {
 
         Assertions.assertThrows(NullPointerException.class, () ->
             sut.execute(stepContribution, chunkContext));
+    }
+
+    @Test
+    void executeThrowsDataAccessException() throws IOException {
+        Mockito.when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class)))
+                .thenThrow(new DataAccessException("...") {});
+
+        List<RoleAssignmentHistory> list = new ArrayList<>();
+        list.add(TestDataBuilder.buildRoleAssignmentHistory());
+
+        Mockito.when(jdbcTemplate.query(anyString(), ArgumentMatchers.<ResultSetExtractor<Object>>any()))
+                .thenReturn(list);
+
+        Assertions.assertThrows(DataAccessException.class, () ->
+                sut.execute(stepContribution, chunkContext));
     }
 
     @Test
@@ -131,12 +141,12 @@ class DeleteExpiredRecordsTest {
                        invocation.getArgument(1);
                    Mockito.when(rs.next()).thenReturn(true, false);
 
-                   Mockito.when(rs.getObject(ArgumentMatchers.eq("id")))
-                          .thenReturn(UUID.fromString("9785c98c-78f2-418b-ab74-a892c3ccca9f"));
-                   Mockito.when(rs.getString(ArgumentMatchers.eq("request_id")))
-                          .thenReturn("123e4567-e89b-42d3-a456-556642445678");
+                   Mockito.when(rs.getString(ArgumentMatchers.eq("id")))
+                          .thenReturn("9785c98c-78f2-418b-ab74-a892c3ccca9f");
+                   Mockito.when(rs.getObject(ArgumentMatchers.eq("request_id"), ArgumentMatchers.eq(UUID.class)))
+                          .thenReturn(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"));
                    Mockito.when(rs.getString(ArgumentMatchers.eq("actor_id_type"))).thenReturn(ActorIdType.IDAM.name());
-                   Mockito.when(rs.getObject(ArgumentMatchers.eq("actor_id")))
+                   Mockito.when(rs.getString(ArgumentMatchers.eq("actor_id")))
                           .thenReturn("3168da13-00b3-41e3-81fa-cbc71ac28a0f");
                    Mockito.when(rs.getString(ArgumentMatchers.eq("role_type")))
                           .thenReturn(RoleType.CASE.name());
@@ -161,13 +171,16 @@ class DeleteExpiredRecordsTest {
                });
 
         List<RoleAssignmentHistory> result = sut.getLiveRecordsFromHistoryTable();
+        Assertions.assertEquals("9785c98c-78f2-418b-ab74-a892c3ccca9f", result.get(0).getId());
+        Assertions.assertEquals(UUID.fromString("123e4567-e89b-42d3-a456-556642445678"), result.get(0).getRequestId());
+        Assertions.assertEquals("3168da13-00b3-41e3-81fa-cbc71ac28a0f", result.get(0).getActorId());
         Assertions.assertEquals("IDAM", result.get(0).getActorIDType());
         Assertions.assertEquals("CASE", result.get(0).getRoleType());
         Assertions.assertEquals("Judge", result.get(0).getRoleName());
         Assertions.assertEquals("PUBLIC", result.get(0).getClassification());
         Assertions.assertEquals("STANDARD", result.get(0).getGrantType());
         Assertions.assertEquals("JUDICIAL", result.get(0).getRoleCategory());
-        Assertions.assertEquals(true, result.get(0).isReadOnly());
+        Assertions.assertTrue(result.get(0).isReadOnly());
         Assertions.assertEquals("LIVE", result.get(0).getStatus());
         Assertions.assertEquals(beginDate, result.get(0).getBeginTime());
         Assertions.assertEquals(endDate, result.get(0).getEndTime());

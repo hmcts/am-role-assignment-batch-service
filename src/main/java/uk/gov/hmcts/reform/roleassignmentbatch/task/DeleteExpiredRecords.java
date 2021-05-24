@@ -56,7 +56,7 @@ public class DeleteExpiredRecords implements Tasklet {
             this.insertIntoRoleAssignmentHistoryTable(rah);
 
             String numRecordsUpdatedLog = String.format("Updated number of records in History Table : %s",
-                    getCountFromHistoryTable() - currentRecordsInHistoryTable);
+                    Math.subtractExact(getCountFromHistoryTable(), currentRecordsInHistoryTable));
             log.info(numRecordsUpdatedLog);
         } catch (DataAccessException e) {
             log.info(String.format(" DataAccessException %s", e.getMessage()));
