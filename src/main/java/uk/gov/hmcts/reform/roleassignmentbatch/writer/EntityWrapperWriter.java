@@ -19,7 +19,7 @@ public class EntityWrapperWriter implements ItemWriter<EntityWrapper> {
 
     @Override
     public void write(List<? extends EntityWrapper> items) throws Exception {
-        for (EntityWrapper item: items) {
+        for (EntityWrapper item : items) {
             newtableWriter.write(Collections.singletonList(item.getNewtable()));
             requestEntityWriter.write(Collections.singletonList(item.getRequestEntity()));
         }
