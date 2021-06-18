@@ -1,13 +1,5 @@
 package uk.gov.hmcts.reform;
 
-import java.io.File;
-import java.io.FileWriter;
-
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.BlobServiceClientBuilder;
-import com.azure.storage.blob.models.BlobItem;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
 import org.springframework.boot.SpringApplication;
@@ -21,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 public class RoleAssignmentBatchApplication {
 
     public static void main(String[] args) throws Exception {
-
+/*
         String connectStr = System.getenv("BLOB_STORAGE_CONN_STRING");
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr).buildClient();
 
@@ -54,7 +46,7 @@ public class RoleAssignmentBatchApplication {
 
         System.out.println("\nDownloading blob to\n\t " + downloadedFile.getAbsolutePath());
 
-        blobClient.downloadToFile(downloadedFile.getAbsolutePath(), true);
+        blobClient.downloadToFile(downloadedFile.getAbsolutePath(), true);*/
         System.out.println("Download Completed");
         ApplicationContext context = SpringApplication.run(RoleAssignmentBatchApplication.class, args);
         //Sleep added to allow app-insights to flush the logs
