@@ -3,6 +3,7 @@ package uk.gov.hmcts.reform.roleassignmentbatch.config;
 import javax.sql.DataSource;
 
 import org.springframework.batch.core.Job;
+import org.springframework.batch.core.SkipListener;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
 import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
@@ -27,10 +28,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.core.io.PathResource;
 import org.springframework.core.task.SimpleAsyncTaskExecutor;
 import org.springframework.core.task.TaskExecutor;
+import org.springframework.dao.DeadlockLoserDataAccessException;
 import org.springframework.stereotype.Component;
 import uk.gov.hmcts.reform.domain.model.CcdCaseUsers;
 import uk.gov.hmcts.reform.roleassignmentbatch.entities.EntityWrapper;
-import uk.gov.hmcts.reform.roleassignmentbatch.entities.Newtable;
+import uk.gov.hmcts.reform.roleassignmentbatch.entities.AuditFaults;
+import uk.gov.hmcts.reform.roleassignmentbatch.entities.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignmentbatch.entities.RequestEntity;
 import uk.gov.hmcts.reform.roleassignmentbatch.processors.EntityWrapperProcessor;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.DeleteExpiredRecords;
@@ -125,6 +128,16 @@ public class BatchConfig extends DefaultBatchConfigurer {
         }
     }
 
+    /*@Bean
+    public RequestProcessor requestProcessor() {
+        return new RequestProcessor();
+    }
+
+    @Bean
+    public HistoryProcessor historyProcessor() {
+        return new HistoryProcessor();
+    }*/
+
     @Bean
     public EntityWrapperProcessor entityWrapperProcessor() {
         return new EntityWrapperProcessor();
@@ -140,13 +153,28 @@ public class BatchConfig extends DefaultBatchConfigurer {
     }
 
     @Bean
-    public JdbcBatchItemWriter<Newtable> insertInRequestTableNewTable() {
-        return
-            new JdbcBatchItemWriterBuilder<Newtable>()
+    public JdbcBatchItemWriter<AuditFaults> insertInRequestTableNewTable() {
+        return new JdbcBatchItemWriterBuilder<AuditFaults>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("insert into nitish_table(myid,column2) values(:myid,:column2)")
+                .sql("insert into audit_faults(failed_at, reason, ccd_users, request, history, live) " +
+                        "values(:failedAt, :reason, :ccdUsers, :request, :history, :live)")
                 .dataSource(dataSource)
                 .build();
+    }
+
+    @Bean
+    public JdbcBatchItemWriter<HistoryEntity> insertInHistoryTable() {
+        return
+                new JdbcBatchItemWriterBuilder<HistoryEntity>()
+                        .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+                        .sql("INSERT INTO role_assignment_history (id, request_id, actor_id_type, actor_id, " +
+                                "role_type, role_name, classification, grant_type, role_category, read_only, " +
+                                "begin_time, end_time, status, reference, process, status_sequence, attributes, " +
+                                "created) VALUES(:id, :requestEntity.id, :actorIdType, :actorId, :roleType," +
+                                " :roleName, :classification, :grantType, :roleCategory, false, :beginTime, :endTime," +
+                                " :status, :reference, :process, 1, '{}', now() )")
+                        .dataSource(dataSource)
+                        .build();
     }
 
     @Bean
@@ -155,15 +183,26 @@ public class BatchConfig extends DefaultBatchConfigurer {
     }
 
     @Bean
+    SkipListener<CcdCaseUsers, EntityWrapper> auditSkipListener() {
+        return new AuditSkipListener();
+    }
+
+    @Bean
     public Step ccdToRasStep() {
         return steps.get("ccdToRasStep")
-                    .<CcdCaseUsers, EntityWrapper>chunk(1000)
-                    .reader(ccdCaseUsersReader())
-                    .processor(entityWrapperProcessor())
-                    .writer(entityWrapperWriter())
-                    .taskExecutor(taskExecutor())
-                    .throttleLimit(10)
-                    .build();
+                .<CcdCaseUsers, EntityWrapper>chunk(5)
+                .faultTolerant()
+                .retryLimit(3)
+                .retry(DeadlockLoserDataAccessException.class)
+                .skip(Exception.class).skip(NumberFormatException.class)
+                .skipLimit(10)
+                .listener(auditSkipListener())
+                .reader(ccdCaseUsersReader())
+                .processor(entityWrapperProcessor())
+                .writer(entityWrapperWriter())
+                .taskExecutor(taskExecutor())
+                .throttleLimit(10)
+                .build();
     }
 
     @Bean

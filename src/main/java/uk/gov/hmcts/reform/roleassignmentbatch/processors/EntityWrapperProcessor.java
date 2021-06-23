@@ -3,15 +3,21 @@ package uk.gov.hmcts.reform.roleassignmentbatch.processors;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import com.fasterxml.jackson.databind.node.BooleanNode;
 import org.springframework.batch.item.ItemProcessor;
 import uk.gov.hmcts.reform.domain.model.CcdCaseUsers;
 import uk.gov.hmcts.reform.roleassignmentbatch.entities.EntityWrapper;
-import uk.gov.hmcts.reform.roleassignmentbatch.entities.Newtable;
+import uk.gov.hmcts.reform.roleassignmentbatch.entities.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignmentbatch.entities.RequestEntity;
 
 
 public class EntityWrapperProcessor implements ItemProcessor<CcdCaseUsers, EntityWrapper> {
 
+   /* @Autowired
+    RequestProcessor requestProcessor;
+
+    @Autowired
+    HistoryProcessor historyProcessor;*/
 
     /**
      * Process the provided item, returning a potentially modified or new item for continued
@@ -26,7 +32,7 @@ public class EntityWrapperProcessor implements ItemProcessor<CcdCaseUsers, Entit
     @Override
     public EntityWrapper process(CcdCaseUsers ccdCaseUsers) throws Exception {
         UUID requestUuid = UUID.randomUUID();
-        Newtable newtable = Newtable.builder().myid(requestUuid.toString()).column2(requestUuid.toString()).build();
+
         RequestEntity requestEntity = RequestEntity.builder()
                                                    .id(requestUuid)
                                                    .correlationId(UUID.randomUUID().toString())
@@ -42,9 +48,28 @@ public class EntityWrapperProcessor implements ItemProcessor<CcdCaseUsers, Entit
                                                    .log(null)
                                                    .created(LocalDateTime.now())
                                                    .build();
+
+        HistoryEntity historyEntity = HistoryEntity.builder()
+                .id(requestUuid)
+                .requestEntity(RequestEntity.builder().id(requestUuid).build())
+                .actorId(ccdCaseUsers.getUserId())
+                .actorIdType("judge")
+                .roleType("judge")
+                .roleName("name")
+                .status("APPROVED")
+                .process("CCD")
+                .classification("org")
+                .grantType("admin")
+                .attributes(BooleanNode.getFalse())
+                .reference(ccdCaseUsers.getCaseDataId().concat(ccdCaseUsers.getUserId()))
+                .log(null)
+                .created(LocalDateTime.now())
+                .build();
+
         return EntityWrapper.builder()
-                            .newtable(newtable)
+                            .ccdCaseUsers(ccdCaseUsers)
                             .requestEntity(requestEntity)
+                            .historyEntity(historyEntity)
                             .build();
     }
 }
