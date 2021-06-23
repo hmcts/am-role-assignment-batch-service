@@ -13,7 +13,7 @@ import uk.gov.hmcts.reform.roleassignmentbatch.entities.RequestEntity;
 
 public class EntityWrapperProcessor implements ItemProcessor<CcdCaseUsers, EntityWrapper> {
 
-   /* @Autowired
+    /* @Autowired
     RequestProcessor requestProcessor;
 
     @Autowired
@@ -26,7 +26,7 @@ public class EntityWrapperProcessor implements ItemProcessor<CcdCaseUsers, Entit
      *
      * @param ccdCaseUsers to be processed
      * @return potentially modified or new item for continued processing, {@code null} if processing of the
-     * provided item should not continue.
+     *     provided item should not continue.
      * @throws Exception thrown if exception occurs during processing.
      */
     @Override
@@ -34,20 +34,20 @@ public class EntityWrapperProcessor implements ItemProcessor<CcdCaseUsers, Entit
         UUID requestUuid = UUID.randomUUID();
 
         RequestEntity requestEntity = RequestEntity.builder()
-                                                   .id(requestUuid)
-                                                   .correlationId(UUID.randomUUID().toString())
-                                                   .clientId("ccd_migration")
-                                                   .authenticatedUserId("A fixed Authenticated User Id")
-                                                   .assignerId(ccdCaseUsers.getUserId())
-                                                   .requestType("CREATE")
-                                                   .status("APPROVED")
-                                                   .process("CCD")
-                                                   .replaceExisting(false)
-                                                   .roleAssignmentId(UUID.randomUUID())
-                                                   .reference(ccdCaseUsers.getCaseDataId().concat(ccdCaseUsers.getUserId()))
-                                                   .log(null)
-                                                   .created(LocalDateTime.now())
-                                                   .build();
+                                               .id(requestUuid)
+                                               .correlationId(UUID.randomUUID().toString())
+                                               .clientId("ccd_migration")
+                                               .authenticatedUserId("A fixed Authenticated User Id")
+                                               .assignerId(ccdCaseUsers.getUserId())
+                                               .requestType("CREATE")
+                                               .status("APPROVED")
+                                               .process("CCD")
+                                               .replaceExisting(false)
+                                               .roleAssignmentId(UUID.randomUUID())
+                                               .reference(ccdCaseUsers.getCaseDataId().concat(ccdCaseUsers.getUserId()))
+                                               .log(null)
+                                               .created(LocalDateTime.now())
+                                               .build();
 
         HistoryEntity historyEntity = HistoryEntity.builder()
                 .id(requestUuid)

@@ -37,6 +37,7 @@ import uk.gov.hmcts.reform.roleassignmentbatch.entities.HistoryEntity;
 import uk.gov.hmcts.reform.roleassignmentbatch.entities.RequestEntity;
 import uk.gov.hmcts.reform.roleassignmentbatch.processors.EntityWrapperProcessor;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.DeleteExpiredRecords;
+import uk.gov.hmcts.reform.roleassignmentbatch.util.Constants;
 import uk.gov.hmcts.reform.roleassignmentbatch.writer.EntityWrapperWriter;
 
 @Configuration
@@ -56,14 +57,6 @@ public class BatchConfig extends DefaultBatchConfigurer {
 
     @Autowired
     DataSource dataSource;
-
-    public final String REQUEST_QUERY = "INSERT INTO role_assignment_request(id, correlation_id,client_id,authenticated_user_id,assigner_id,request_type," +
-                                        "status," +
-                                        "process,reference," +
-                                        "replace_existing,role_assignment_id,log,created)" +
-                                        " VALUES (:id, :correlationId,:clientId,:authenticatedUserId,:assignerId,:requestType,:status,:process,:reference," +
-                                        ":replaceExisting," +
-                                        ":roleAssignmentId,:log,:created)";
 
     @Bean
     public Step stepOrchestration(@Autowired StepBuilderFactory steps,
@@ -94,8 +87,8 @@ public class BatchConfig extends DefaultBatchConfigurer {
             .names("case_data_id", "user_id", "case_role", "jurisdiction", "case_type", "role_category")
             .lineMapper(lineMapper())
             .fieldSetMapper(new BeanWrapperFieldSetMapper<CcdCaseUsers>() {{
-                setTargetType(CcdCaseUsers.class);
-            }})
+                    setTargetType(CcdCaseUsers.class);
+                }})
             .build();
     }
 
@@ -147,17 +140,16 @@ public class BatchConfig extends DefaultBatchConfigurer {
     public JdbcBatchItemWriter<RequestEntity> insertInRequestTable() {
         return new JdbcBatchItemWriterBuilder<RequestEntity>()
             .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-            .sql(REQUEST_QUERY)
+            .sql(Constants.REQUEST_QUERY)
             .dataSource(dataSource)
             .build();
     }
 
     @Bean
-    public JdbcBatchItemWriter<AuditFaults> insertInRequestTableNewTable() {
+    public JdbcBatchItemWriter<AuditFaults> insertInAuditFaults() {
         return new JdbcBatchItemWriterBuilder<AuditFaults>()
                 .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                .sql("insert into audit_faults(failed_at, reason, ccd_users, request, history, live) " +
-                        "values(:failedAt, :reason, :ccdUsers, :request, :history, :live)")
+                .sql(Constants.AUDIT_QUERY)
                 .dataSource(dataSource)
                 .build();
     }
@@ -167,12 +159,7 @@ public class BatchConfig extends DefaultBatchConfigurer {
         return
                 new JdbcBatchItemWriterBuilder<HistoryEntity>()
                         .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
-                        .sql("INSERT INTO role_assignment_history (id, request_id, actor_id_type, actor_id, " +
-                                "role_type, role_name, classification, grant_type, role_category, read_only, " +
-                                "begin_time, end_time, status, reference, process, status_sequence, attributes, " +
-                                "created) VALUES(:id, :requestEntity.id, :actorIdType, :actorId, :roleType," +
-                                " :roleName, :classification, :grantType, :roleCategory, false, :beginTime, :endTime," +
-                                " :status, :reference, :process, 1, '{}', now() )")
+                        .sql(Constants.HISTORY_QUERY)
                         .dataSource(dataSource)
                         .build();
     }

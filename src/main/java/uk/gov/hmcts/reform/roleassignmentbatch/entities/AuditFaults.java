@@ -16,7 +16,7 @@ import lombok.Setter;
 
 @Entity
 @Builder
-@Table(name = "audit_faults" )
+@Table(name = "audit_faults")
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter

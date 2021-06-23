@@ -13,7 +13,7 @@ import org.springframework.context.ApplicationContext;
 public class RoleAssignmentBatchApplication {
 
     public static void main(String[] args) throws Exception {
-/*
+        /*
         String connectStr = System.getenv("BLOB_STORAGE_CONN_STRING");
         BlobServiceClient blobServiceClient = new BlobServiceClientBuilder().connectionString(connectStr).buildClient();
 
@@ -29,17 +29,17 @@ public class RoleAssignmentBatchApplication {
         File localFile = new File(localPath + fileName);
 
 
-// Write text to the file
+        // Write text to the file
         FileWriter writer = new FileWriter(localPath + fileName, true);
         writer.write("Hello, World!");
         writer.close();
 
-// Get a reference to a blob
+        // Get a reference to a blob
         BlobClient blobClient = containerClient.getBlobClient(fileName);
 
         System.out.println("\nUploading to Blob storage as blob:\n\t" + blobClient.getBlobUrl());
 
-// Upload the blob
+        // Upload the blob
         blobClient.uploadFromFile(localPath + fileName, true);
         blobClient = containerClient.getBlobClient("book2.csv");
         File downloadedFile = new File("src/main/resources/book2.csv");
