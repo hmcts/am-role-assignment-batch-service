@@ -72,6 +72,20 @@ CREATE TABLE role_assignment_request(
 	CONSTRAINT role_assignment_request_pkey PRIMARY KEY (id)
 );
 
+CREATE TABLE audit_faults (
+	id int8 NOT NULL,
+	failed_at varchar NULL,
+	reason varchar NULL,
+	ccd_users varchar NULL,
+	request varchar NULL,
+	history varchar NULL,
+	live varchar NULL
+);
+
+
+create sequence AUDIT_ID_SEQ;
+ALTER TABLE audit_faults ALTER COLUMN id
+SET DEFAULT nextval('AUDIT_ID_SEQ');
 
 ALTER TABLE role_assignment_history ADD CONSTRAINT fk_role_assignment_history_role_assignment_request FOREIGN KEY (request_id) REFERENCES role_assignment_request(id);
 

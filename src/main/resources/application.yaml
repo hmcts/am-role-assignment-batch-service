@@ -59,3 +59,4 @@ spring:
 delete-expired-records: deleteExpiredRecords
 batchjob-name: deleteExpiredRecords
 batch-size: 4
+caseuser-filepath: src/main/resources/book2.csv

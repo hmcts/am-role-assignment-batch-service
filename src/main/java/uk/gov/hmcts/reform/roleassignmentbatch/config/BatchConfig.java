@@ -50,6 +50,9 @@ public class BatchConfig extends DefaultBatchConfigurer {
     @Value("${batchjob-name}")
     String jobName;
 
+    @Value("${caseuser-filepath}")
+    String ccdCaseUserFilePath;
+
     @Autowired
     JobBuilderFactory jobs;
     @Autowired
@@ -82,7 +85,7 @@ public class BatchConfig extends DefaultBatchConfigurer {
         return new FlatFileItemReaderBuilder<CcdCaseUsers>()
             .name("historyEntityReader")
             .linesToSkip(1)
-            .resource(new PathResource("src/main/resources/book2.csv"))
+            .resource(new PathResource(ccdCaseUserFilePath))
             .delimited()
             .names("case_data_id", "user_id", "case_role", "jurisdiction", "case_type", "role_category")
             .lineMapper(lineMapper())
@@ -177,12 +180,12 @@ public class BatchConfig extends DefaultBatchConfigurer {
     @Bean
     public Step ccdToRasStep() {
         return steps.get("ccdToRasStep")
-                .<CcdCaseUsers, EntityWrapper>chunk(5)
+                .<CcdCaseUsers, EntityWrapper>chunk(1000)
                 .faultTolerant()
                 .retryLimit(3)
                 .retry(DeadlockLoserDataAccessException.class)
-                .skip(Exception.class).skip(NumberFormatException.class)
-                .skipLimit(10)
+                .skip(Exception.class).skip(Throwable.class)
+                .skipLimit(1000)
                 .listener(auditSkipListener())
                 .reader(ccdCaseUsersReader())
                 .processor(entityWrapperProcessor())

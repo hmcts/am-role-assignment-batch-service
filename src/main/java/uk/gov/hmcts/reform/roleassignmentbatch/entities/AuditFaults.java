@@ -25,7 +25,7 @@ public class AuditFaults implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private String id;
+    private Long id;
 
     @Column(name = "failed_at")
     private String failedAt;
