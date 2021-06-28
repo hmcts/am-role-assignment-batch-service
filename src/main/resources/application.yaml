@@ -62,7 +62,7 @@ batch-size: 4
 
 csv-file-name: book2.csv
 csv-file-path: src/main/resources/
-
+caseuser-filepath: src/main/resources/book2.csv
 azure:
   container-name: amccdras
   account-name: ${AZURE_BLOB_STORAGE_ACCOUNT:amdatamigrationstorage}
