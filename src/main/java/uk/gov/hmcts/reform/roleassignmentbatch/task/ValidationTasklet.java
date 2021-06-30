@@ -83,13 +83,13 @@ public class ValidationTasklet implements Tasklet {
     }
 
     protected void validateJurisdiction(String jurisdiction) {
-        if(jurisdiction.length() > 255) {
+        if(jurisdiction.length() > 20) {
             throw new ValidationException("jurisdiction invalid");
         }
     }
 
     protected void validateCaseTypeId(String caseTypeId) {
-        if(caseTypeId.length() > 255) {
+        if(caseTypeId.length() > 35) {
             throw new ValidationException("caseTypeId invalid");
         }
     }
@@ -98,7 +98,6 @@ public class ValidationTasklet implements Tasklet {
         if(startDate.length() < 16) {
             throw new ValidationException("startDate invalid length");
         }
-
     }
     //case reference - bigint in db, in reality these are all 16 digits long
     //user id - varchar(64) in db, but just the IDAM ID which is usually a UUID. Sometimes it can be a string as well. please don’t enforce UUID check.
