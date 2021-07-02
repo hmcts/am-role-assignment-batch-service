@@ -1,6 +1,8 @@
 server:
   port: ${PORT:4099}
-
+logging:
+  level:
+    ROOT: INFO
 management:
   health:
     db:
@@ -59,11 +61,19 @@ spring:
 delete-expired-records: deleteExpiredRecords
 batchjob-name: deleteExpiredRecords
 batch-size: 4
-
 csv-file-name: book2.csv
 csv-file-path: src/main/resources/
-caseuser-filepath: src/main/resources/book2.csv
+migration:
+  masterFlag: false
+  renameTables: true
+
 azure:
   container-name: amccdras
   account-name: ${AZURE_BLOB_STORAGE_ACCOUNT:amdatamigrationstorage}
   account-key: ${AZURE_BLOB_STORAGE_ACCOUNT_KEY:}
+
+launchdarkly:
+  sdk:
+    key: ${LD_SDK_KEY:}
+    environment: ${LAUNCH_DARKLY_ENV:pr}
+    user: am-${LAUNCH_DARKLY_ENV:local}
