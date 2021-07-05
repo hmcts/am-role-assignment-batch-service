@@ -64,8 +64,8 @@ batch-size: 4
 csv-file-name: book2.csv
 csv-file-path: src/main/resources/
 migration:
-  masterFlag: false
-  renameTables: true
+  masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:false}
+  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:true}
 
 azure:
   container-name: amccdras
