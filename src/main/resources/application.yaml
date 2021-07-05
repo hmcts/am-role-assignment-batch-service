@@ -50,9 +50,9 @@ spring:
             non_contextual_creation: true
   datasource:
     driverClassName: org.postgresql.Driver
-    url: jdbc:postgresql://${ORG_ROLE_MAPPING_DB_HOST:localhost}:${ORG_ROLE_MAPPING_DB_PORT:5451}/${ORG_ROLE_MAPPING_DB_NAME:role_assignment}${ORG_ROLE_MAPPING_DB_OPTIONS:?stringtype=unspecified}
-    username: ${ORG_ROLE_MAPPING_DB_USERNAME:am}
-    password: ${ORG_ROLE_MAPPING_DB_PASSWORD:am}
+    url: jdbc:postgresql://${ROLE_ASSIGNMENT_DB_HOST:localhost}:${ROLE_ASSIGNMENT_DB_PORT:5451}/${ROLE_ASSIGNMENT_DB_NAME:role_assignment}${ROLE_ASSIGNMENT_DB_OPTIONS:?stringtype=unspecified}
+    username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
+    password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
     properties:
       charSet: UTF-8
 
@@ -63,8 +63,8 @@ batch-size: 4
 csv-file-name: book2.csv
 csv-file-path: src/main/resources/
 migration:
-  masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:false}
-  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:true}
+  masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:true}
+  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:false}
 
 azure:
   container-name: amccdras
