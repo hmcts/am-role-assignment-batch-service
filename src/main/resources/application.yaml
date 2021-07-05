@@ -62,10 +62,19 @@ batch-size: 4
 
 csv-file-name: book2.csv
 csv-file-path: src/main/resources/
-caseuser-filepath: src/main/resources/book2.csv
+migration:
+  masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:false}
+  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:true}
+
 azure:
   container-name: amccdras
   account-name: ${AZURE_BLOB_STORAGE_ACCOUNT:amdatamigrationstorage}
   account-key: ${AZURE_BLOB_STORAGE_ACCOUNT_KEY:}
+
+launchdarkly:
+  sdk:
+    key: ${LD_SDK_KEY:}
+    environment: ${LAUNCH_DARKLY_ENV:pr}
+    user: am-${LAUNCH_DARKLY_ENV:local}
 
 logging.level.org.springframework.batch.core.step.item.ChunkMonitor: ${APPLICATION_LOGGING_LEVEL:ERROR}
