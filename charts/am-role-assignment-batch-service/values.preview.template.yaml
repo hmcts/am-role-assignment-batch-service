@@ -1,6 +1,11 @@
 job:
   image: ${IMAGE_NAME}
   ingressHost: ${SERVICE_FQDN}
+  keyVaults:
+    am:
+      secrets:
+        - AppInsightsInstrumentationKey
+        - am-role-assignment-service-s2s-secret
   environment:
     ROLE_ASSIGNMENT_DB_HOST: "{{ .Release.Name }}-postgresql"
     ROLE_ASSIGNMENT_DB_NAME: role_assignment
@@ -9,11 +14,6 @@ job:
     ROLE_ASSIGNMENT_DB_PORT: 5432
     ROLE_ASSIGNMENT_DB_OPTIONS: "?stringtype=unspecified"
     ENABLE_DB_MIGRATE: true
-  keyVaults:
-    am:
-      secrets:
-        - AppInsightsInstrumentationKey
-        - am-role-assignment-service-s2s-secret
   global:
     jobKind: CronJob
 
