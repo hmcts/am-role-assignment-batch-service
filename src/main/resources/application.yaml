@@ -54,6 +54,8 @@ spring:
       charSet: UTFh-8
   batch:
     initialize-schema: always
+    job:
+      enabled: true
 
 delete-expired-records: deleteExpiredRecords
 batchjob-name: deleteExpiredRecords
