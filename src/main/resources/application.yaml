@@ -34,6 +34,8 @@ spring:
     web-application-type: none
   jackson:
     default-property-inclusion: NON_NULL
+  config:
+    import: "optional:configtree:/mnt/secrets/am/"
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: true
