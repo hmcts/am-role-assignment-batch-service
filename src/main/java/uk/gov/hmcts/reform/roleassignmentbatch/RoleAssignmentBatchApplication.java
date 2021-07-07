@@ -16,14 +16,14 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 public class RoleAssignmentBatchApplication {
 
     public static void main(String[] args) throws Exception {
-        String dbPass = System.getenv("ROLE_ASSIGNMENT_DB_PASSWORD");
+        String dbPass = System.getenv("AppInsightsInstrumentationKey");
         if (null == dbPass || StringUtils.isEmpty(dbPass)) {
             log.info("The database password is null or empty");
         } else {
             log.info("the length of dbPass is : " + dbPass.length());
         }
 
-        String s2sValue = System.getenv("AM_ROLE_ASSIGNMENT_SERVICE_SECRET");
+        String s2sValue = System.getenv("am-role-assignment-service-s2s-secret");
         if (null == s2sValue || StringUtils.isEmpty(s2sValue)) {
             log.info("The s2sValue is null or empty");
         } else {
