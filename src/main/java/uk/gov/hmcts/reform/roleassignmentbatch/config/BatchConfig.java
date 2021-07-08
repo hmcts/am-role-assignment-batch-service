@@ -86,6 +86,8 @@ public class BatchConfig extends DefaultBatchConfigurer {
     String accountName;
     @Value("${azure.account-key}")
     String accountKey;
+    @Value("${ccd.roleNames}")
+    String roleMapping;
 
     @Autowired
     JobBuilderFactory jobs;
@@ -305,7 +307,7 @@ public class BatchConfig extends DefaultBatchConfigurer {
 
     @Bean
     ValidationTasklet validationTasklet() {
-        return new ValidationTasklet(fileName, filePath, ccdCaseUsersReader());
+        return new ValidationTasklet(fileName, filePath, ccdCaseUsersReader(), roleMapping);
     }
 
     @Bean
@@ -407,6 +409,7 @@ public class BatchConfig extends DefaultBatchConfigurer {
         return new FlowBuilder<Flow>("processCcdDataToTempTables")
             .start(replicateTables())
             .next(injectDataIntoView())
+            .next(validationStep())
             .next(ccdToRasStep())
             .build();
     }

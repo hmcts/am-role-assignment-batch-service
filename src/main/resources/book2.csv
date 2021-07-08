@@ -1,5 +1,4 @@
-﻿case_data_id,user_id,case_role,jurisdiction,case_type,role_category,begin_date
-11111,userId1,Solicitor A,IAC,IAC,PROFESSIONAL,2021-06-29 15:21:56
+﻿11111,userId1,Solicitor A,IAC,IAC,PROFESSIONAL,2021-06-29 15:21:56
 11111,userId2,Solicitor B,IAC,IAC,PROFESSIONAL,2021-06-29 15:21:56
 11111,userId3,Solicitor C,IAC,IAC,PROFESSIONAL,2021-06-29 15:21:56
 11111,userId4,Solicitor D,IAC,IAC,PROFESSIONAL,2021-06-29 15:21:56
