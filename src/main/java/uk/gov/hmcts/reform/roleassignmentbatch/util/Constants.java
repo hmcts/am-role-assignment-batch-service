@@ -8,6 +8,7 @@ public class Constants {
     public static final String DISABLED = "DISABLED";
     public static final String ENABLED = "ENABLED";
     public static final String STOPPED = "STOPPED";
+    public static final String FAILED = "FAILED";
     public static final String ANY = "*";
 
     public static final String REQUEST_QUERY = "INSERT INTO replica_role_assignment_request(id, correlation_id,"
