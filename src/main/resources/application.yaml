@@ -71,6 +71,7 @@ csv-file-path: src/main/resources/
 migration:
   masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:true}
   renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:false}
+  chunkSuze: ${CHUNK_SIZE:1000}
 
 azure:
   container-name: amccdras
