@@ -30,8 +30,13 @@ management:
 spring:
   application:
     name: Role Assignment Batch Service
+  batch:
+    initialize-schema: always
+    job:
+      enabled: true
   main:
     web-application-type: none
+    allow-bean-definition-overriding: true
   jackson:
     default-property-inclusion: NON_NULL
   config:
@@ -42,6 +47,7 @@ spring:
     log_statement: all
     properties:
       hibernate:
+        ddl-auto: update
         jdbc:
           lob:
             non_contextual_creation: true
@@ -53,10 +59,29 @@ spring:
     username: ${ROLE_ASSIGNMENT_DB_USERNAME:am}
     password: ${ROLE_ASSIGNMENT_DB_PASSWORD:am}
     properties:
-      charSet: UTFh-8
-  batch:
-    initialize-schema: always
+      charSet: UTF-8
+
 
 delete-expired-records: deleteExpiredRecords
 batchjob-name: deleteExpiredRecords
 batch-size: 4
+
+csv-file-name: book2.csv
+csv-file-path: src/main/resources/
+migration:
+  masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:true}
+  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:false}
+  chunkSuze: ${CHUNK_SIZE:1000}
+
+azure:
+  container-name: amccdras
+  account-name: ${AZURE_BLOB_STORAGE_ACCOUNT:amdatamigrationstorage}
+  account-key: ${AZURE_BLOB_STORAGE_ACCOUNT_KEY:}
+
+launchdarkly:
+  sdk:
+    key: ${LD_SDK_KEY:}
+    environment: ${LAUNCH_DARKLY_ENV:pr}
+    user: am-${LAUNCH_DARKLY_ENV:local}
+
+logging.level.org.springframework.batch.core.step.item.ChunkMonitor: ${APPLICATION_LOGGING_LEVEL:ERROR}
