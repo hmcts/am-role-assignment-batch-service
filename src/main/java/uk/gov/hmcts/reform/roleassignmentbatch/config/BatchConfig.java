@@ -7,6 +7,7 @@ import static uk.gov.hmcts.reform.roleassignmentbatch.util.Constants.STOPPED;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.sql.DataSource;
 
@@ -87,7 +88,8 @@ public class BatchConfig extends DefaultBatchConfigurer {
     @Value("${azure.account-key}")
     String accountKey;
     @Value("${ccd.roleNames}")
-    String roleMapping;
+    List<String> roleMapping;
+
 
     @Autowired
     JobBuilderFactory jobs;
