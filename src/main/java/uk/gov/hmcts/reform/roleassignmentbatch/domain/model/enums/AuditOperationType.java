@@ -1,7 +1,6 @@
 package uk.gov.hmcts.reform.roleassignmentbatch.domain.model.enums;
 
 public enum AuditOperationType {
-    VALIDATION("Validating assignments"),
     READ("Reading assignments"),
     PROCESS("Processing assignments"),
     WRITE("Writing assignments");

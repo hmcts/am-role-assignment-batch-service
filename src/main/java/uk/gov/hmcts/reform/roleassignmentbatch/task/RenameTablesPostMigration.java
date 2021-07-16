@@ -7,9 +7,7 @@ import org.springframework.batch.core.step.tasklet.Tasklet;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.stereotype.Component;
 
-@Component
 @Slf4j
 public class RenameTablesPostMigration implements Tasklet {
 
@@ -18,24 +16,15 @@ public class RenameTablesPostMigration implements Tasklet {
 
     @Override
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) throws Exception {
-        dropTables();
-        renameTables();
-        createIndexes();
-        return RepeatStatus.FINISHED;
 
-    }
+        log.info("Dropping the existing temp tables.");
+        jdbcTemplate.update("DROP TABLE IF EXISTS temp_actor_cache_control CASCADE;");
+        jdbcTemplate.update("DROP TABLE IF EXISTS temp_role_assignment CASCADE;");
+        jdbcTemplate.update("DROP TABLE IF EXISTS temp_role_assignment_history CASCADE;");
+        jdbcTemplate.update("DROP TABLE IF EXISTS temp_role_assignment_request CASCADE;");
 
-    private void createIndexes() {
-        log.info("Rebuilding the indexes");
+        log.info("Drop temp table is Successful");
 
-        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS idx_process_reference ON"
-                             + " role_assignment_history USING btree (process, reference);");
-        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS idx_actor_id ON role_assignment USING btree (actor_id);");
-
-        log.info("Index rebuild is complete");
-    }
-
-    private void renameTables() {
         log.info("Starting renaming the tables.");
         log.info("Renaming the Live table.");
         jdbcTemplate.update("ALTER TABLE IF EXISTS role_assignment RENAME TO temp_role_assignment;");
@@ -58,15 +47,14 @@ public class RenameTablesPostMigration implements Tasklet {
         log.info("Rename Actor Cache is Successful");
 
         log.info("End Table renaming");
-    }
+        log.info("Rebuilding the indexes");
 
-    private void dropTables() {
-        log.info("Dropping the existing temp tables.");
-        jdbcTemplate.update("DROP TABLE IF EXISTS temp_actor_cache_control CASCADE;");
-        jdbcTemplate.update("DROP TABLE IF EXISTS temp_role_assignment CASCADE;");
-        jdbcTemplate.update("DROP TABLE IF EXISTS temp_role_assignment_history CASCADE;");
-        jdbcTemplate.update("DROP TABLE IF EXISTS temp_role_assignment_request CASCADE;");
+        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS idx_process_reference ON"
+                             + " role_assignment_history USING btree (process, reference);");
+        jdbcTemplate.execute("CREATE INDEX IF NOT EXISTS idx_actor_id ON role_assignment USING btree (actor_id);");
 
-        log.info("Drop temp table is Successful");
+        log.info("Index rebuild is complete");
+
+        return RepeatStatus.FINISHED;
     }
 }

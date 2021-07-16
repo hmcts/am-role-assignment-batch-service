@@ -9,9 +9,9 @@ import uk.gov.hmcts.reform.roleassignmentbatch.domain.model.enums.CcdCaseUser;
 @Setter
 @Builder
 public class EntityWrapper {
-    private CcdCaseUser ccdCaseUser;
-    private RequestEntity requestEntity;
-    private HistoryEntity roleAssignmentHistoryEntity;
-    private RoleAssignmentEntity roleAssignmentEntity;
-    private ActorCacheEntity actorCacheEntity;
+    public CcdCaseUser ccdCaseUser;
+    public RequestEntity requestEntity;
+    public HistoryEntity roleAssignmentHistoryEntity;
+    public RoleAssignmentEntity roleAssignmentEntity;
+    public ActorCacheEntity actorCacheEntity;
 }

@@ -5,7 +5,8 @@ import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
-import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
 import org.springframework.batch.core.step.tasklet.Tasklet;
@@ -20,13 +21,13 @@ import uk.gov.hmcts.reform.roleassignmentbatch.entities.RoleAssignmentHistory;
 import uk.gov.hmcts.reform.roleassignmentbatch.util.BatchUtil;
 
 @Component
-@Slf4j
 public class DeleteExpiredRecords implements Tasklet {
 
+    private static final Logger log = LoggerFactory.getLogger(DeleteExpiredRecords.class);
     private final JdbcTemplate jdbcTemplate;
     private final int batchSize;
 
-    public DeleteExpiredRecords(@Autowired JdbcTemplate jdbcTemplate, @Value("${batch-size}") int batchSize) {
+    public DeleteExpiredRecords(@Autowired JdbcTemplate jdbcTemplate, @Value("${batch-size}")int batchSize) {
         this.jdbcTemplate = jdbcTemplate;
         this.batchSize = batchSize;
     }
@@ -63,6 +64,8 @@ public class DeleteExpiredRecords implements Tasklet {
         } catch (Exception e) {
             log.info(e.getMessage());
         }
+
+        log.info("Delete expired records is successful");
         return RepeatStatus.FINISHED;
     }
 

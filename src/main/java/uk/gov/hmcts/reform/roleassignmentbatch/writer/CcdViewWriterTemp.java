@@ -1,9 +1,7 @@
 package uk.gov.hmcts.reform.roleassignmentbatch.writer;
 
-import java.security.SecureRandom;
-import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import org.springframework.batch.item.ItemWriter;
 import org.springframework.batch.item.database.JdbcBatchItemWriter;
@@ -20,18 +18,11 @@ public class CcdViewWriterTemp implements ItemWriter<CcdCaseUser> {
 
     @Override
     public void write(List<? extends CcdCaseUser> items) throws Exception {
-        List<String> uuidList = new ArrayList<>();
-        for (int i = 0; i < 1000; i++) {
-            uuidList.add("userId" + i);
-        }
-        Random random = SecureRandom.getInstanceStrong();
-        //ccdCaseUserJdbcBatchItemWriter.write(items)
-
-        for (CcdCaseUser user : items) {
-            user.setUserId(uuidList.get(random.nextInt(uuidList.size())));
-        }
-        for (int i = 0; i <= 0; i++) {
-            ccdCaseUserJdbcBatchItemWriter.write(items);
+        //ccdCaseUserJdbcBatchItemWriter.write(items);
+        for (int i = 0; i <= 33; i++) {
+            for (CcdCaseUser user : items) {
+                ccdCaseUserJdbcBatchItemWriter.write(Collections.singletonList(user));
+            }
 
         }
     }
