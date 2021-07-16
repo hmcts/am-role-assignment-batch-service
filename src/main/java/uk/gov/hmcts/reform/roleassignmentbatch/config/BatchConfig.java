@@ -19,7 +19,10 @@ import org.springframework.batch.core.job.flow.Flow;
 import org.springframework.batch.core.job.flow.FlowExecutionStatus;
 import org.springframework.batch.core.job.flow.JobExecutionDecider;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
+import org.springframework.batch.item.database.BeanPropertyItemSqlParameterSourceProvider;
+import org.springframework.batch.item.database.JdbcBatchItemWriter;
 import org.springframework.batch.item.database.JdbcPagingItemReader;
+import org.springframework.batch.item.database.builder.JdbcBatchItemWriterBuilder;
 import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.batch.repeat.RepeatStatus;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +34,7 @@ import org.springframework.core.task.TaskExecutor;
 import org.springframework.dao.DeadlockLoserDataAccessException;
 import uk.gov.hmcts.reform.roleassignmentbatch.ApplicationParams;
 import uk.gov.hmcts.reform.roleassignmentbatch.domain.model.enums.CcdCaseUser;
+import uk.gov.hmcts.reform.roleassignmentbatch.entities.AuditFaults;
 import uk.gov.hmcts.reform.roleassignmentbatch.entities.EntityWrapper;
 import uk.gov.hmcts.reform.roleassignmentbatch.processors.EntityWrapperProcessor;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.BuildCcdViewMetrics;
@@ -40,8 +44,12 @@ import uk.gov.hmcts.reform.roleassignmentbatch.task.RenameTablesPostMigration;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.ReplicateTablesTasklet;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.ValidationTasklet;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.WriteToActorCacheTableTasklet;
+import uk.gov.hmcts.reform.roleassignmentbatch.util.Constants;
 import uk.gov.hmcts.reform.roleassignmentbatch.writer.CcdViewWriterTemp;
 import uk.gov.hmcts.reform.roleassignmentbatch.writer.EntityWrapperWriter;
+
+import java.util.List;
+import javax.sql.DataSource;
 
 @Slf4j
 @Configuration
@@ -53,7 +61,6 @@ public class BatchConfig extends DefaultBatchConfigurer {
     String taskParent;
     @Value("${batchjob-name}")
     String jobName;
-
     @Value("${azure.container-name}")
     String containerName;
     @Value("${migration.chunkSuze}")
@@ -69,6 +76,9 @@ public class BatchConfig extends DefaultBatchConfigurer {
 
     @Autowired
     StepBuilderFactory steps;
+
+    @Autowired
+    DataSource dataSource;
 
     @Autowired
     ApplicationParams applicationParams;
@@ -125,6 +135,15 @@ public class BatchConfig extends DefaultBatchConfigurer {
     @Bean
     public CcdViewWriterTemp ccdViewWriterTemp() {
         return new CcdViewWriterTemp();
+    }
+
+    @Bean
+    public JdbcBatchItemWriter<AuditFaults> insertInAuditFaults() {
+        return new JdbcBatchItemWriterBuilder<AuditFaults>()
+            .itemSqlParameterSourceProvider(new BeanPropertyItemSqlParameterSourceProvider<>())
+            .sql(Constants.AUDIT_QUERY)
+            .dataSource(dataSource)
+            .build();
     }
 
     @Bean
@@ -240,8 +259,8 @@ public class BatchConfig extends DefaultBatchConfigurer {
     public Flow processCcdDataToTempTablesFlow() {
         return new FlowBuilder<Flow>("processCcdDataToTempTables")
             .start(replicateTables())
-            .next(validationStep())
             .next(injectDataIntoView())
+            .next(validationStep())
             .next(buildCCdViewMetricsStep())
             .next(ccdToRasStep())
             .next(writeToActorCache())
