@@ -1,5 +1,14 @@
 package uk.gov.hmcts.reform.roleassignmentbatch;
 
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Properties;
+import javax.annotation.PreDestroy;
+import javax.sql.DataSource;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
@@ -12,15 +21,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.MediaType;
 import org.springframework.jdbc.datasource.SingleConnectionDataSource;
-
-import javax.annotation.PreDestroy;
-import javax.sql.DataSource;
-import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
-import java.util.Properties;
 
 @Configuration
 public abstract class BaseTest {
@@ -58,7 +58,6 @@ public abstract class BaseTest {
             // Instruct JDBC to accept JSON string for JSONB
             props.setProperty("stringtype", "unspecified");
             connection = DriverManager.getConnection(pg.getJdbcUrl("postgres", "postgres"), props);
-            //connection.setAutoCommit(false);
             DataSource datasource = new SingleConnectionDataSource(connection, true);
             Flyway.configure().dataSource(datasource)
                     .locations("db/migration/").load().migrate();

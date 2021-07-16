@@ -20,7 +20,7 @@ import uk.gov.hmcts.reform.roleassignmentbatch.entities.RequestEntity;
 import uk.gov.hmcts.reform.roleassignmentbatch.helper.TestDataBuilder;
 
 @RunWith(MockitoJUnitRunner.class)
-public class AuditSkipListenerTest {
+class AuditSkipListenerTest {
 
     @Mock
     private JdbcBatchItemWriter<AuditFaults> auditWriter;
@@ -34,7 +34,7 @@ public class AuditSkipListenerTest {
     }
 
     @Test
-    public void verifyOnSkipInProcess() throws Exception {
+    void verifyOnSkipInProcess() throws Exception {
         CcdCaseUser ccdCaseUser = TestDataBuilder.buildCcdCaseUsers();
         String msg = "Exception";
         Throwable t = new Throwable(msg);
@@ -44,12 +44,12 @@ public class AuditSkipListenerTest {
     }
 
     @Test
-    public void verifyOnSkipInRead() {
+    void verifyOnSkipInRead() {
         Assertions.assertThrows(NullPointerException.class, () -> auditSkipListener.onSkipInRead(null));
     }
 
     @Test
-    public void verifyOnSkipInWrite() throws Exception {
+    void verifyOnSkipInWrite() throws Exception {
         UUID requestUuid = UUID.randomUUID();
         CcdCaseUser ccdCaseUser = TestDataBuilder.buildCcdCaseUsers();
         HistoryEntity historyEntity = TestDataBuilder.buildHistoryEntity(requestUuid, ccdCaseUser.getUserId(),
