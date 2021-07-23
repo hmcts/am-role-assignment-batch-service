@@ -63,10 +63,10 @@ spring:
 
 ## Sendgrid configuration ##
   mail:
-    to: stanly.sambathkumar@hmcts.net,Aashish.Aggarwal@HMCTS.NET,Nitish.Singla@HMCTS.NET,Nitin.Sahu@HMCTS.NET
+    to: Nitish.Singla@HMCTS.NET
     host: mta.reform.hmcts.net
     port: 25
-    enabled: ${mail.enabled:false}
+    enabled: ${mail.enabled:true}
     properties:
       mail-smtp:
         starttls:
