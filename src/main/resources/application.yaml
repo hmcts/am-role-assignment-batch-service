@@ -61,6 +61,19 @@ spring:
     properties:
       charSet: UTF-8
 
+## Sendgrid configuration ##
+  mail:
+    to: Nitish.Singla@HMCTS.NET
+    host: mta.reform.hmcts.net
+    port: 25
+    enabled: ${mail.enabled:true}
+    properties:
+      mail-smtp:
+        starttls:
+          enable: false
+        ssl:
+          trust: "*"
+
 
 delete-expired-records: deleteExpiredRecords
 batchjob-name: deleteExpiredRecords
@@ -90,3 +103,8 @@ launchdarkly:
     user: am-${LAUNCH_DARKLY_ENV:local}
 
 logging.level.org.springframework.batch.core.step.item.ChunkMonitor: ${APPLICATION_LOGGING_LEVEL:ERROR}
+
+sendgrid:
+  key: XXXXXXX
+  mail:
+    from: no-reply@mail-am-nonprod.platform.hmcts.net
