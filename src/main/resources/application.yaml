@@ -63,10 +63,10 @@ spring:
 
 ## Sendgrid configuration ##
   mail:
-    to: Nitish.Singla@HMCTS.NET
-    host: mta.reform.hmcts.net
+    to: ${EMAIL_LIST:testemail123@hmcts.net}
+    host: ${EMAIL_HOST:mta.reform.hmcts.net}
     port: 25
-    enabled: ${mail.enabled:true}
+    enabled: ${EMAIL_ENABLED:true}
     properties:
       mail-smtp:
         starttls:
@@ -92,10 +92,10 @@ azure:
   account-key: ${AZURE_BLOB_STORAGE_ACCOUNT_KEY:}
 
 ccd:
-  roleNames: "[PETSOLICITOR],[RESPSOLICITOR],[BARRISTER],[CAFCASSSOLICITOR],[EPSMANAGING],[LABARRISTER],[LAMANAGING],
+  roleNames: ${ROLE_NAMES:[PETSOLICITOR],[RESPSOLICITOR],[BARRISTER],[CAFCASSSOLICITOR],[EPSMANAGING],[LABARRISTER],[LAMANAGING],
               [LASOLICITOR],[SOLICITOR],[SOLICITORA],[SOLICITORB],[SOLICITORC],[SOLICITORD],[SOLICITORE],
-              [SOLICITORF],[SOLICITORG],[SOLICITORH],[SOLICITORI],[SOLICITORJ],[LEGALREPRESENTATIVE],[CREATOR]"
-  roleCategories: "PROFESSIONAL,CITIZEN,JUDICIAL,LEGAL_OPERATIONS"
+              [SOLICITORF],[SOLICITORG],[SOLICITORH],[SOLICITORI],[SOLICITORJ],[LEGALREPRESENTATIVE],[CREATOR]}
+  roleCategories: ${ROLE_CATEGORIES:PROFESSIONAL,CITIZEN,JUDICIAL,LEGAL_OPERATIONS}
 
 launchdarkly:
   sdk:
