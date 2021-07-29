@@ -105,6 +105,6 @@ launchdarkly:
 logging.level.org.springframework.batch.core.step.item.ChunkMonitor: ${APPLICATION_LOGGING_LEVEL:ERROR}
 
 sendgrid:
-  key: XXXXXXX
+  key: ${AM_SENDGRID_API_KEY:dummyValue}
   mail:
-    from: no-reply@mail-am-nonprod.platform.hmcts.net
+    from: ${AM_SENDGRID_API_EMAIL_FROM:no-reply@mail-am-nonprod.platform.hmcts.net}
