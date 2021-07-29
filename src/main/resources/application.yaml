@@ -63,7 +63,7 @@ spring:
 
 ## Sendgrid configuration ##
   mail:
-    to: ${EMAIL_LIST:testemail123@hmcts.net}
+    to: ${EMAIL_LIST:nitish.singla@hmcts.net}
     host: ${EMAIL_HOST:mta.reform.hmcts.net}
     port: 25
     enabled: ${EMAIL_ENABLED:true}
@@ -80,7 +80,6 @@ batchjob-name: deleteExpiredRecords
 batch-size: 4
 
 csv-file-name: book2.csv
-csv-file-path: src/main/resources/
 migration:
   masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:true}
   renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:false}
