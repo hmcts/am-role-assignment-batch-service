@@ -86,7 +86,7 @@ migration:
   chunkSize: ${CHUNK_SIZE:1000}
 
 azure:
-  container-name: amccdra
+  container-name: amccdras
   account-name: ${AZURE_BLOB_STORAGE_ACCOUNT:amdatamigrationstorage}
   account-key: ${AZURE_BLOB_STORAGE_ACCOUNT_KEY:}
 
