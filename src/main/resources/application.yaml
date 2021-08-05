@@ -63,7 +63,7 @@ spring:
 
 ## Sendgrid configuration ##
   mail:
-    to: ${EMAIL_LIST:conor.halpin@hmcts.net}
+    to: ${EMAIL_LIST:nitish.singla@hmcts.net}
     host: ${EMAIL_HOST:mta.reform.hmcts.net}
     port: 25
     enabled: ${EMAIL_ENABLED:true}
@@ -82,11 +82,11 @@ batch-size: 4
 csv-file-name: book2.csv
 migration:
   masterFlag: ${CCD_AM_MIGRATION_MASTER_FLAG:true}
-  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:true}
+  renameTables: ${CCD_AM_MIGRATION_RENAME_TABLES_FLAG:false}
   chunkSize: ${CHUNK_SIZE:1000}
 
 azure:
-  container-name: amccdras
+  container-name: amccdra
   account-name: ${AZURE_BLOB_STORAGE_ACCOUNT:amdatamigrationstorage}
   account-key: ${AZURE_BLOB_STORAGE_ACCOUNT_KEY:}
 
@@ -105,6 +105,6 @@ launchdarkly:
 logging.level.org.springframework.batch.core.step.item.ChunkMonitor: ${APPLICATION_LOGGING_LEVEL:ERROR}
 
 sendgrid:
-  key: ${AM_SENDGRID_API_KEY:***REMOVED***}
+  key: ${AM_SENDGRID_API_KEY:dummyValue}
   mail:
     from: ${AM_SENDGRID_API_EMAIL_FROM:no-reply@mail-am-nonprod.platform.hmcts.net}
