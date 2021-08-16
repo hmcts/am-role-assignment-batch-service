@@ -63,7 +63,7 @@ spring:
 
 ## Sendgrid configuration ##
   mail:
-    to: ${EMAIL_LIST:nitish.singla@hmcts.net}
+    to: ${EMAIL_LIST:}
     host: ${EMAIL_HOST:mta.reform.hmcts.net}
     port: 25
     enabled: ${EMAIL_ENABLED:true}
