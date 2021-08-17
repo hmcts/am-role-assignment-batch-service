@@ -61,12 +61,12 @@ spring:
     properties:
       charSet: UTF-8
 
-## Sendgrid configuration ##
+  ## Sendgrid configuration ##
   mail:
-    to: ${EMAIL_LIST:}
+    to: ${EMAIL_LIST:nitish.singla@hmcts.net}
     host: ${EMAIL_HOST:mta.reform.hmcts.net}
     port: 25
-    enabled: ${EMAIL_ENABLED:true}
+    enabled: ${EMAIL_ENABLED:false} # Disabled this property for integration test.
     properties:
       mail-smtp:
         starttls:
@@ -92,8 +92,8 @@ azure:
 
 ccd:
   roleNames: ${ROLE_NAMES:[PETSOLICITOR],[RESPSOLICITOR],[BARRISTER],[CAFCASSSOLICITOR],[EPSMANAGING],[LABARRISTER],[LAMANAGING],
-              [LASOLICITOR],[SOLICITOR],[SOLICITORA],[SOLICITORB],[SOLICITORC],[SOLICITORD],[SOLICITORE],
-              [SOLICITORF],[SOLICITORG],[SOLICITORH],[SOLICITORI],[SOLICITORJ],[LEGALREPRESENTATIVE],[CREATOR]}
+    [LASOLICITOR],[SOLICITOR],[SOLICITORA],[SOLICITORB],[SOLICITORC],[SOLICITORD],[SOLICITORE],
+    [SOLICITORF],[SOLICITORG],[SOLICITORH],[SOLICITORI],[SOLICITORJ],[LEGALREPRESENTATIVE],[CREATOR]}
   roleCategories: ${ROLE_CATEGORIES:PROFESSIONAL,CITIZEN,JUDICIAL,LEGAL_OPERATIONS}
 
 launchdarkly:
