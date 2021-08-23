@@ -203,7 +203,7 @@ dependencies {
 
     compile group: 'org.flywaydb', name: 'flyway-core', version: '7.11.0'
 
-    implementation (group: 'com.azure', name: 'azure-storage-blob', version: '12.12.0') {
+    implementation (group: 'com.azure', name: 'azure-storage-blob', version: '12.13.0') {
         exclude group: 'io.netty'
     }
     //Remove netty in future versions of Azure blob store.
