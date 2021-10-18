@@ -213,7 +213,7 @@ dependencies {
         exclude group: 'io.netty'
     }
     //Remove netty in future versions of Azure blob store.
-    implementation group: 'io.netty', name: 'netty-all', version: '4.1.65.Final'
+    implementation group: 'io.netty', name: 'netty-all', version: '4.1.69.Final'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.10'
