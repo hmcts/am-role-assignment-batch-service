@@ -186,7 +186,7 @@ dependencies {
     compile (group: 'org.springframework.boot', name: 'spring-boot-starter-batch')
     compile(group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: versions.springBoot)
     compile(group: 'org.springframework', name: 'spring-jdbc')
-    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.8'
+    implementation group: 'org.springframework', name: 'spring-core', version: '5.3.12'
 
     //Sendgrid
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: versions.springBoot
@@ -205,7 +205,7 @@ dependencies {
     compile group: 'uk.gov.hmcts.reform', name: 'logging', version: versions.reformLogging
     compile group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk' , version: '5.4.0'
 
-    implementation group: 'com.google.guava', name: 'guava', version: '30.1.1-jre'
+    implementation group: 'com.google.guava', name: 'guava', version: '31.0.1-jre'
 
     compile group: 'org.flywaydb', name: 'flyway-core', version: '7.11.0'
 
@@ -216,8 +216,8 @@ dependencies {
     implementation group: 'io.netty', name: 'netty-all', version: '4.1.65.Final'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
 
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.10'
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.53'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: '10.0.12'
+    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: '9.0.54'
 
     testCompile group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
     testImplementation 'org.springframework.batch:spring-batch-test'
