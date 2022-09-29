@@ -237,8 +237,11 @@ dependencies {
     implementation group: 'javax.inject', name: 'javax.inject', version: '1'
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
-    implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk' , version: '5.10.2'
+    implementation 'com.launchdarkly:launchdarkly-java-server-sdk'
     constraints {
+        implementation('com.launchdarkly:launchdarkly-java-server-sdk:5.10.2') {
+            because 'prev version has cve'
+            }
         implementation('org.yaml:snakeyaml:1.33') {
             because 'prev version has cve'
             }
