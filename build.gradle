@@ -238,6 +238,11 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.5.0'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.launchdarkly', name: 'launchdarkly-java-server-sdk' , version: '5.10.2'
+    constraints {
+        implementation('org.yaml:snakeyaml:1.33') {
+            because 'prev version has cve'
+            }
+    }
     implementation group: 'com.google.guava', name: 'guava', version: '31.1-jre'
     implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.2.2'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
