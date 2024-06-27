@@ -44,7 +44,7 @@ public class EmailServiceImpl implements EmailService {
     @Value("${spring.mail.enabled:false}")
     private boolean mailEnabled;
 
-    @Value("${launchdarkly.sdk.environment}")
+    @Value("${batch-environment}")
     private String environmentName;
 
     @Autowired

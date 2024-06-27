@@ -91,12 +91,7 @@ delete-expired-judicial-records: deleteExpiredJudicialRecords
 batchjob-name: deleteExpiredRecords
 batch-size: 4
 
-
-launchdarkly:
-  sdk:
-    key: ${LD_SDK_KEY:}
-    environment: ${LAUNCH_DARKLY_ENV:pr}
-    user: am-${LAUNCH_DARKLY_ENV:local}
+batch-environment: ${BATCH_ENV:local}
 
 logging.level.org.springframework.batch.core.step.item.ChunkMonitor: ${APPLICATION_LOGGING_LEVEL:ERROR}
 
