@@ -19,6 +19,8 @@ import java.util.UUID;
 
 public class TestDataBuilder {
 
+    public static final String TEST_ACTOR_ID = "21334a2b-79ce-44eb-9168-2d49a744be9c";
+
     private TestDataBuilder() {
         //not meant to be instantiated.
     }
@@ -28,7 +30,7 @@ public class TestDataBuilder {
         return RoleAssignmentHistory
                 .builder()
                 .id(("9785c98c-78f2-418b-ab74-a892c3ccca9f"))
-                .actorId(("21334a2b-79ce-44eb-9168-2d49a744be9c"))
+                .actorId((TEST_ACTOR_ID))
                 .actorIDType(ActorIdType.IDAM.name())
                 .attributes(buildAttributesFromFile().toString())
                 .created(Timestamp.valueOf(timeStamp))
@@ -50,7 +52,7 @@ public class TestDataBuilder {
                 .build();
     }
 
-    private static JsonNode buildAttributesFromFile() throws IOException {
+    public static JsonNode buildAttributesFromFile() throws IOException {
         InputStream inputStream =
                 TestDataBuilder.class.getClassLoader().getResourceAsStream("attributes.json");
         assert inputStream != null;
