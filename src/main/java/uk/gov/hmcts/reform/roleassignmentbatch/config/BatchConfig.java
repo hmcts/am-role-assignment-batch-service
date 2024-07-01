@@ -3,133 +3,58 @@ package uk.gov.hmcts.reform.roleassignmentbatch.config;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
-import org.springframework.batch.core.configuration.annotation.DefaultBatchConfigurer;
-import org.springframework.batch.core.configuration.annotation.EnableBatchProcessing;
-import org.springframework.batch.core.configuration.annotation.JobBuilderFactory;
-import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
-import org.springframework.batch.core.job.flow.JobExecutionDecider;
+import org.springframework.batch.core.job.builder.JobBuilder;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
-import org.springframework.batch.repeat.RepeatStatus;
+import org.springframework.batch.core.repository.JobRepository;
+import org.springframework.batch.core.step.builder.StepBuilder;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import uk.gov.hmcts.reform.roleassignmentbatch.processors.EntityWrapperProcessor;
+import org.springframework.transaction.PlatformTransactionManager;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.DeleteExpiredRecords;
 import uk.gov.hmcts.reform.roleassignmentbatch.task.DeleteJudicialExpiredRecords;
-import uk.gov.hmcts.reform.roleassignmentbatch.task.ReconcileDataTasklet;
-import uk.gov.hmcts.reform.roleassignmentbatch.task.ReplicateTablesTasklet;
-import uk.gov.hmcts.reform.roleassignmentbatch.task.ValidationTasklet;
-import uk.gov.hmcts.reform.roleassignmentbatch.writer.EntityWrapperWriter;
 
 @Slf4j
 @Configuration
-@EnableBatchProcessing
-public class BatchConfig extends DefaultBatchConfigurer {
+public class BatchConfig {
 
     @Value("${delete-expired-records}")
-    String taskParent;
+    String deleteExpiredRecordsStepName;
 
     @Value("${delete-expired-judicial-records}")
-    String taskParentJudicial;
+    String deleteExpiredJudicialRecordsStepName;
 
     @Value("${batchjob-name}")
     String jobName;
 
-    @Value("${migration.chunkSize}")
-    private int chunkSize;
-
-    @Value("${migration.masterFlag}")
-    boolean masterFlag;
-    @Value("${migration.renameTables}")
-    boolean renameTables;
-
-    @Autowired
-    JobBuilderFactory jobs;
-
-    @Autowired
-    StepBuilderFactory steps;
-
-    @Autowired
-    ReplicateTablesTasklet replicateTablesTasklet;
-
-    @Autowired
-    ReconcileDataTasklet reconcileDataTasklet;
-
-    @Autowired
-    ValidationTasklet validationTasklet;
-
     @Bean
-    public Step stepOrchestration(@Autowired StepBuilderFactory steps,
-                                  @Autowired DeleteExpiredRecords deleteExpiredRecords) {
-        return steps.get(taskParent)
-                    .tasklet(deleteExpiredRecords)
-                    .build();
+    public Step stepOrchestration(JobRepository jobRepository, DeleteExpiredRecords deleteExpiredRecords,
+                                  PlatformTransactionManager transactionManager) {
+        return new StepBuilder(deleteExpiredRecordsStepName, jobRepository)
+                .tasklet(deleteExpiredRecords, transactionManager)
+                .build();
     }
 
     @Bean
-    public Job runRoutesJob(@Autowired JobBuilderFactory jobs,
-                            @Autowired StepBuilderFactory steps,
+    public Job runRoutesJob(JobRepository jobRepository,
                             @Autowired DeleteExpiredRecords deleteExpiredRecords,
-                            @Autowired DeleteJudicialExpiredRecords deleteJudicialExpiredRecords) {
-
-        return jobs.get(jobName)
+                            @Autowired DeleteJudicialExpiredRecords deleteJudicialExpiredRecords,
+                            PlatformTransactionManager transactionManager) {
+        return new JobBuilder(jobName, jobRepository)
                 .incrementer(new RunIdIncrementer())
-                .start(stepOrchestration(steps, deleteExpiredRecords))
-                .next(stepDeleteJudicialExpired(steps, deleteJudicialExpiredRecords))
-                .build();
-    }
-
-
-    @Bean
-    public Step stepDeleteJudicialExpired(@Autowired StepBuilderFactory steps,
-                                          @Autowired DeleteJudicialExpiredRecords stepDeleteJudicialExpired) {
-        return steps.get(taskParentJudicial)
-                .tasklet(stepDeleteJudicialExpired)
+                .start(stepOrchestration(jobRepository, deleteExpiredRecords, transactionManager))
+                .next(stepDeleteJudicialExpired(jobRepository, deleteJudicialExpiredRecords, transactionManager))
                 .build();
     }
 
     @Bean
-    public EntityWrapperProcessor entityWrapperProcessor() {
-        return new EntityWrapperProcessor();
-    }
-
-    @Bean
-    EntityWrapperWriter entityWrapperWriter() {
-        return new EntityWrapperWriter();
-    }
-
-    @Bean
-    public Step validationStep() {
-        return steps.get("validationStep")
-                    .tasklet(validationTasklet)
-                    .build();
-    }
-
-    @Bean
-    public Step replicateTables() {
-        return steps.get("ReplicateTables")
-                    .tasklet(replicateTablesTasklet)
-                    .build();
-    }
-
-    @Bean
-    public Step reconcileData() {
-        return steps.get("reconcileDataTasklet")
-                    .tasklet(reconcileDataTasklet)
-                    .build();
-    }
-
-    @Bean
-    public JobExecutionDecider checkLdStatus() {
-        return new JobRunnableDecider(masterFlag, renameTables);
-    }
-
-    @Bean
-    public Step firstStep() {
-        return steps.get("LdValidation")
-                    .tasklet((contribution, chunkContext) -> RepeatStatus.FINISHED)
-                    .build();
+    public Step stepDeleteJudicialExpired(JobRepository jobRepository,
+                                          DeleteJudicialExpiredRecords stepDeleteJudicialExpired,
+                                          PlatformTransactionManager transactionManager) {
+        return new StepBuilder(deleteExpiredJudicialRecordsStepName, jobRepository)
+                .tasklet(stepDeleteJudicialExpired, transactionManager)
+                .build();
     }
 
 }
