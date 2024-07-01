@@ -12,6 +12,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.opentelemetry.api.trace.SpanKind;
+import io.opentelemetry.instrumentation.annotations.WithSpan;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.StepContribution;
 import org.springframework.batch.core.scope.context.ChunkContext;
@@ -45,6 +47,7 @@ public class DeleteExpiredRecords implements Tasklet {
 
     @Override
     @Transactional
+    @WithSpan(value = "Delete Expired Records", kind = SpanKind.SERVER)
     public RepeatStatus execute(StepContribution contribution, ChunkContext chunkContext) {
         log.info("Delete Expired records task starts::");
         Instant startTime = Instant.now();

@@ -258,6 +258,7 @@ dependencies {
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
 
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-spring-boot-starter', version: '2.6.4'
+    implementation group: 'io.opentelemetry.instrumentation', name: 'opentelemetry-instrumentation-annotations', version: '1.33.4'
 
     testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
     testImplementation group: 'org.springframework.batch', name: 'spring-batch-test'
