@@ -253,7 +253,6 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.google.guava', name: 'guava', version: '33.2.1-jre'
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.22.3'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
     implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
@@ -288,6 +287,8 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+
+    integrationTestImplementation group: 'org.flywaydb', name: 'flyway-core', version: '9.22.3'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath

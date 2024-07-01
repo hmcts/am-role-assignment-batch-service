@@ -53,7 +53,7 @@ spring:
         jdbc:
           lob:
             non_contextual_creation: true
-  flyway.enabled: ${ENABLE_DB_MIGRATE:false}
+  flyway.enabled: false
   flyway.locations: classpath:db/migration
   datasource:
     driverClassName: org.postgresql.Driver
