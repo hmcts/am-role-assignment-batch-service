@@ -34,12 +34,16 @@ import uk.gov.hmcts.reform.roleassignmentbatch.util.BatchUtil;
 @Slf4j
 public class DeleteExpiredRecords implements Tasklet {
 
+    private final EmailService emailService;
     private final JdbcTemplate jdbcTemplate;
-    private final int batchSize;
-    @Autowired
-    private EmailService emailService;
 
-    public DeleteExpiredRecords(@Autowired JdbcTemplate jdbcTemplate, @Value("${batch-size}") int batchSize) {
+    private final int batchSize;
+
+    @Autowired
+    public DeleteExpiredRecords(EmailService emailService,
+                                JdbcTemplate jdbcTemplate,
+                                @Value("${batch-size}") int batchSize) {
+        this.emailService = emailService;
         this.jdbcTemplate = jdbcTemplate;
         this.batchSize = batchSize;
     }

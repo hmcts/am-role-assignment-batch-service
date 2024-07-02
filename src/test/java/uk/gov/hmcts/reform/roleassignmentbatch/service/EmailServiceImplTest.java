@@ -101,7 +101,6 @@ class EmailServiceImplTest {
 
     }
 
-
     @ParameterizedTest
     @ValueSource(strings = {DELETE_EXPIRED_JOB, DELETE_EXPIRED_JUDICIAL_JOB})
     void sendEmail_enabled_deleteExpired(String module) throws IOException {
@@ -124,6 +123,7 @@ class EmailServiceImplTest {
         Response response = sut.sendEmail(emailData);
 
         // THEN
+        assertEquals(HttpStatus.OK.value(), response.getStatusCode());
         // verify template call: i.e. correct variables for correct template
         ArgumentCaptor<Context> contextCapture = ArgumentCaptor.forClass(Context.class);
         verify(templateEngine, times(1)).process(eq(TEMPLATE_DELETE_COUNT), contextCapture.capture());
@@ -146,9 +146,7 @@ class EmailServiceImplTest {
         // MAIL TO
         List<Email> tos = mail.personalization.get(0).getTos();
         assertEquals(2, tos.size());
-        tos.forEach(email -> {
-            assertTrue(List.of(MAIL_TO_1, MAIL_TO_2).contains(email.getEmail()));
-        });
+        tos.forEach(email -> assertTrue(List.of(MAIL_TO_1, MAIL_TO_2).contains(email.getEmail())));
         // MAIL SUBJECT
         // ... must contain ENV
         assertTrue(StringUtils.containsIgnoreCase(mail.getSubject(), BATCH_ENV));

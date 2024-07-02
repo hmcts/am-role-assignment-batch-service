@@ -52,8 +52,6 @@ class DeleteExpiredRecordsTest {
     @Mock
     ResultSet rs = Mockito.mock(ResultSet.class);
 
-    private DeleteExpiredRecords sut = new DeleteExpiredRecords(jdbcTemplate, 5);
-
     @Mock
     StepExecution stepExecution = Mockito.mock(StepExecution.class);
 
@@ -62,6 +60,8 @@ class DeleteExpiredRecordsTest {
 
     @Mock
     EmailService emailService = Mockito.mock(EmailService.class);
+
+    private DeleteExpiredRecords sut = new DeleteExpiredRecords(emailService, jdbcTemplate, 5);
 
     @Test
     void execute() throws IOException {

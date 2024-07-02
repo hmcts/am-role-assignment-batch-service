@@ -34,18 +34,19 @@ import static uk.gov.hmcts.reform.roleassignmentbatch.util.Constants.DELETE_EXPI
 @Slf4j
 public class DeleteJudicialExpiredRecords implements Tasklet {
 
+    private final EmailService emailService;
     private final JdbcTemplate jdbcTemplate;
+
     private final int days;
 
     @Autowired
-    private EmailService emailService;
-
-    public DeleteJudicialExpiredRecords(@Autowired @Qualifier("judicialDataSource") DataSource dataSource,
+    public DeleteJudicialExpiredRecords(EmailService emailService,
+                                        @Qualifier("judicialDataSource") DataSource dataSource,
                                         @Value("${spring.judicial.days}") int days) {
-        jdbcTemplate = new JdbcTemplate(dataSource);
+        this.emailService = emailService;
+        this.jdbcTemplate = new JdbcTemplate(dataSource);
         this.days = days;
     }
-
 
     @Override
     @Transactional
