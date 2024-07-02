@@ -29,9 +29,9 @@ import javax.sql.DataSource;
 @SpringBootTest
 @RunWith(SpringIntegrationSerenityRunner.class)
 @ContextConfiguration(classes = BaseTest.class)
-public class JudicalBookingBatchJobIntegrationTest extends BaseTest {
+public class JudicialBookingBatchJobIntegrationTest extends BaseTest {
 
-    private static final Logger logger = LoggerFactory.getLogger(JudicalBookingBatchJobIntegrationTest.class);
+    private static final Logger logger = LoggerFactory.getLogger(JudicialBookingBatchJobIntegrationTest.class);
     private DeleteJudicialExpiredRecords sut;
 
     @Autowired
