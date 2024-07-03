@@ -43,7 +43,6 @@ def versions = [
         spring             : '6.0.14',
         springSecurity     : '6.0.8',
         sonarPitest        : '0.5',
-        tomcat             : '10.0.27',
         rest_assured       : '5.0.1',
         feign_jackson      : '13.2.1',
         jacksondata        : '2.17.1',
@@ -251,11 +250,8 @@ dependencies {
     implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.3'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.google.guava', name: 'guava', version: '33.2.1-jre'
-    implementation group: 'org.flywaydb', name: 'flyway-core', version: '9.22.3'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-core', version: versions.tomcat
-    implementation group: 'org.apache.tomcat.embed', name: 'tomcat-embed-websocket', version: versions.tomcat
-
+    
     implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.4.11'
 
     testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.13'
@@ -286,6 +282,8 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-junit', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
+
+    integrationTestImplementation group: 'org.flywaydb', name: 'flyway-core', version: '9.22.3'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
