@@ -29,8 +29,11 @@ job:
           alias: JUDICIAL_BOOKING_SERVICE_POSTGRES_USER
         - name: judicial-booking-service-POSTGRES-HOST
           alias: JUDICIAL_BOOKING_SERVICE_POSTGRES_HOST
+        - name: role-assignment-batch-service-EMAIL-LIST
+          alias: EMAIL_LIST
   environment:
     BATCH_ENV: "{{ .Values.global.environment }}"
+    EMAIL_ENABLED: false
     ROLE_ASSIGNMENT_DB_PORT: 5432
     ROLE_ASSIGNMENT_DB_NAME: role_assignment
     JUDICIAL_BOOKING_SERVICE_POSTGRES_PORT: 5432

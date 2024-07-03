@@ -8,7 +8,6 @@ import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Content;
 import com.sendgrid.helpers.mail.objects.Email;
 import com.sendgrid.helpers.mail.objects.Personalization;
-import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.http.HttpException;
@@ -16,8 +15,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.thymeleaf.ITemplateEngine;
 import org.thymeleaf.context.Context;
-import org.thymeleaf.spring5.SpringTemplateEngine;
 import uk.gov.hmcts.reform.roleassignmentbatch.domain.model.EmailData;
 import uk.gov.hmcts.reform.roleassignmentbatch.exception.EmailSendFailedException;
 
@@ -26,32 +25,37 @@ import java.util.List;
 import static uk.gov.hmcts.reform.roleassignmentbatch.util.Constants.DELETE_EXPIRED_JOB;
 import static uk.gov.hmcts.reform.roleassignmentbatch.util.Constants.DELETE_EXPIRED_JUDICIAL_JOB;
 
-
 /**
  * This class sends emails to intended recipients for batch process with summary of outcome.
  */
 @Service
-@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 @Slf4j
 public class EmailServiceImpl implements EmailService {
 
-    @Value("${sendgrid.mail.from}")
-    private String mailFrom;
+    static final String TEMPLATE_DELETE_COUNT = "delete-count.html";
 
-    @Value("${spring.mail.to}")
-    private List<String> mailTo;
+    private final String mailFrom;
+    private final List<String> mailTo;
+    private final boolean mailEnabled;
+    private final String environmentName;
 
-    @Value("${spring.mail.enabled:false}")
-    private boolean mailEnabled;
-
-    @Value("${batch-environment}")
-    private String environmentName;
+    private final SendGrid sendGrid;
+    private final ITemplateEngine templateEngine;
 
     @Autowired
-    private SendGrid sendGrid;
-
-    @Autowired
-    private SpringTemplateEngine templateEngine;
+    public EmailServiceImpl(SendGrid sendGrid,
+                            ITemplateEngine templateEngine,
+                            @Value("${sendgrid.mail.from}") String mailFrom,
+                            @Value("${spring.mail.to}") List<String> mailTo,
+                            @Value("${spring.mail.enabled:false}") boolean mailEnabled,
+                            @Value("${batch-environment}") String environmentName) {
+        this.sendGrid = sendGrid;
+        this.templateEngine = templateEngine;
+        this.mailFrom = mailFrom;
+        this.mailTo = mailTo;
+        this.mailEnabled = mailEnabled;
+        this.environmentName = environmentName;
+    }
 
     /**
      * Generic Method is used to send mail notification to the caller.
@@ -68,14 +72,14 @@ public class EmailServiceImpl implements EmailService {
             var personalization = new Personalization();
             mailTo.forEach(email -> personalization.addTo(new Email(email)));
             Context context = new Context();
-            Content content = null;
+            Content content = new Content();
             emailData.setEmailTo(mailTo);
             emailData.setEmailSubject(concatEmailSubject);
             emailData.setRunId(emailData.getRunId());
             if (List.of(DELETE_EXPIRED_JOB, DELETE_EXPIRED_JUDICIAL_JOB).contains(emailData.getModule())) {
                 emailData.setTemplateMap(emailData.getTemplateMap());
                 context.setVariables(emailData.getTemplateMap());
-                String process = templateEngine.process("delete-count.html", context);
+                String process = templateEngine.process(TEMPLATE_DELETE_COUNT, context);
                 content = new Content("text/html", process);
             }
             Mail mail = new Mail();
@@ -95,7 +99,7 @@ public class EmailServiceImpl implements EmailService {
                         response.getStatusCode(),
                         response.getBody()
                 )));
-                log.error("{}", emailSendFailedException);
+                log.error("", emailSendFailedException);
             }
         }
         return response;
