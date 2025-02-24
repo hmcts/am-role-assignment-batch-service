@@ -54,7 +54,7 @@ mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchAppl
 def jarName = 'am-role-assignment-batch-service.jar'
 
 pmd {
-    toolVersion = '7.9.0'
+    toolVersion = '7.10.0'
     sourceSets = []
 }
 
