@@ -45,7 +45,7 @@ def versions = [
         reformLogging      : '6.1.8',
         serenity           : '4.2.15',
         sonarPitest        : '0.5',
-        rest_assured       : '5.5.0',
+        rest_assured       : '5.5.5',
         feign_jackson      : '13.5',
         jacksondata        : '2.18.3',
         log4JVersion       : '2.24.3'
