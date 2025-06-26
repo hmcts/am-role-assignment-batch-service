@@ -47,7 +47,7 @@ def versions = [
         sonarPitest        : '0.5',
         feign_jackson      : '13.6',
         rest_assured       : '5.5.0',
-        jacksondata        : '2.18.3',
+        jacksondata        : '2.19.1',
         log4JVersion       : '2.24.3'
 ]
 
