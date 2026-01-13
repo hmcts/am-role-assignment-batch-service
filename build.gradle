@@ -48,14 +48,14 @@ def versions = [
         feign_jackson      : '13.6',
         rest_assured       : '5.5.6',
         jacksondata        : '2.19.2',
-        log4JVersion       : '2.25.2'
+        log4JVersion       : '2.25.3'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchApplication'
 def jarName = 'am-role-assignment-batch-service.jar'
 
 pmd {
-    toolVersion = '7.19.0'
+    toolVersion = '7.20.0'
     sourceSets = []
 }
 
@@ -286,7 +286,7 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
-    integrationTestImplementation group: 'org.flywaydb', name: 'flyway-core', version: '11.19.1'
+    integrationTestImplementation group: 'org.flywaydb', name: 'flyway-core', version: '11.20.1'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
