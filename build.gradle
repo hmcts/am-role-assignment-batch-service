@@ -41,7 +41,7 @@ def versions = [
         junitPlatform      : '1.12.2',
         lombok             : '1.18.42',
         gradlePitest       : '1.3.0',
-        pitest             : '1.22.0',
+        pitest             : '1.22.1',
         reformLogging      : '7.0.0',
         serenity           : '4.3.4',
         sonarPitest        : '0.5',
