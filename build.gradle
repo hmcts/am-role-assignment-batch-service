@@ -41,7 +41,7 @@ def versions = [
         junitPlatform      : '1.12.2',
         lombok             : '1.18.42',
         gradlePitest       : '1.3.0',
-        pitest             : '1.22.0',
+        pitest             : '1.22.1',
         reformLogging      : '7.0.0',
         serenity           : '4.3.4',
         sonarPitest        : '0.5',
@@ -286,7 +286,7 @@ dependencies {
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-rest-assured', version: versions.serenity
     integrationTestImplementation group: 'net.serenity-bdd', name: 'serenity-spring', version: versions.serenity
 
-    integrationTestImplementation group: 'org.flywaydb', name: 'flyway-core', version: '11.20.2'
+    integrationTestImplementation group: 'org.flywaydb', name: 'flyway-core', version: '11.20.3'
 
     integrationTestImplementation sourceSets.main.runtimeClasspath
     integrationTestImplementation sourceSets.test.runtimeClasspath
