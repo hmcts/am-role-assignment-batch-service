@@ -14,7 +14,7 @@ plugins {
     id 'uk.gov.hmcts.java' version '0.12.67'
     id 'pmd'
     id 'jacoco'
-    id 'org.springframework.boot' version '3.5.9'
+    id 'org.springframework.boot' version '3.5.11'
     id 'info.solidsoft.pitest' version '1.15.0'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
@@ -45,7 +45,7 @@ def versions = [
         reformLogging      : '7.0.0',
         serenity           : '4.3.4',
         sonarPitest        : '0.5',
-        feign_jackson      : '13.6',
+        feign_jackson      : '13.9',
         rest_assured       : '6.0.0',
         jacksondata        : '2.19.2',
         log4JVersion       : '2.25.3'
@@ -249,7 +249,7 @@ dependencies {
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     implementation group: 'javax.inject', name: 'javax.inject', version: '1'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.9'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.10'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.google.guava', name: 'guava', version: '33.5.0-jre'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
@@ -307,7 +307,7 @@ dependencyManagement {
     }
 
     imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.9"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.11"
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
