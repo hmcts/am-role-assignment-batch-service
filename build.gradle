@@ -317,12 +317,6 @@ dependencyManagement {
 
 configurations.all {
     exclude group: 'org.codehaus.jettison', module: 'jettison'
-
-    resolutionStrategy.eachDependency { details ->
-        if (details.requested.group == 'org.testcontainers') {
-            details.useVersion versions.testcontainers
-        }
-    }
 }
 
 test {
