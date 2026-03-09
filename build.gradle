@@ -48,6 +48,7 @@ def versions = [
         feign_jackson      : '13.9.2',
         rest_assured       : '6.0.0',
         jacksondata        : '2.19.2',
+        testcontainers     : '1.21.4',
         log4JVersion       : '2.25.3'
 ]
 
@@ -278,6 +279,8 @@ dependencies {
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
     testImplementation group: 'io.github.openfeign', name: 'feign-jackson', version: versions.feign_jackson
     testImplementation('com.opentable.components:otj-pg-embedded:1.1.1')
+    testImplementation group: 'org.testcontainers', name: 'testcontainers', version: versions.testcontainers
+    testImplementation group: 'org.testcontainers', name: 'postgresql', version: versions.testcontainers
 
     compileOnly group: 'org.projectlombok', name: 'lombok', version: versions.lombok
     annotationProcessor group: 'org.projectlombok', name: 'lombok', version: versions.lombok
