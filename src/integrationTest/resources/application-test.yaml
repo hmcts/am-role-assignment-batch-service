@@ -51,11 +51,12 @@ spring:
     port: 25
     enabled: ${EMAIL_ENABLED:false} # Disabled this property for integration test.
     properties:
-      mail-smtp:
-        starttls:
-          enable: false
-        ssl:
-          trust: "*"
+      mail:
+        smtp:
+          starttls:
+            enable: false
+          ssl:
+            trust: "*"
 
 
 delete-expired-records: deleteExpiredRecords
