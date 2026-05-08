@@ -8,6 +8,7 @@
 
 Role Assignment Batch Service
 
+
 ## Purpose
 
 Scheduled batch job for removing the expired assignment records from role-assignment-service database. 
