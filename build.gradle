@@ -44,6 +44,7 @@ def versions = [
         pitest             : '1.22.1',
         reformLogging      : '8.0.0',
         serenity           : '4.3.4',
+        spring             : '6.2.19',
         sonarPitest        : '0.5',
         feign_jackson      : '13.9.3',
         rest_assured       : '6.0.0',
@@ -210,6 +211,13 @@ repositories {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'org.springframework'){
+            details.useVersion versions.spring
+        }
+    }
+}
 
 dependencies {
     implementation (group: 'org.springframework.boot', name: 'spring-boot-starter-batch')
