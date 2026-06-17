@@ -37,8 +37,8 @@ ext {
 }
 
 def versions = [
-        junit              : '5.12.2',
-        junitPlatform      : '1.12.2',
+        junit              : '5.14.4',
+        junitPlatform      : '1.14.4',
         lombok             : '1.18.46',
         gradlePitest       : '1.3.0',
         pitest             : '1.22.1',
@@ -56,7 +56,7 @@ mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchAppl
 def jarName = 'am-role-assignment-batch-service.jar'
 
 pmd {
-    toolVersion = '7.23.0'
+    toolVersion = '7.25.0'
     sourceSets = []
 }
 
@@ -136,7 +136,7 @@ jacocoTestReport {
 project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 
 jacoco {
-    toolVersion = "0.8.14"
+    toolVersion = "0.8.15"
 }
 
 pitest {
