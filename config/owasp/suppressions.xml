@@ -16,5 +16,6 @@
     <suppress>
         <notes>https://tools.hmcts.net/jira/browse/DTSAM-1345 Jackson Databind</notes>
         <cve>CVE-2026-54512</cve>
+        <cve>CVE-2026-54514</cve>
     </suppress>
 </suppressions>
