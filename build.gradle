@@ -5,7 +5,7 @@ buildscript {
     }
     dependencies {
         classpath("net.serenity-bdd:serenity-gradle-plugin:3.2.5")
-        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
+        classpath 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.19.0'
     }
 }
 
@@ -14,13 +14,13 @@ plugins {
     id 'uk.gov.hmcts.java' version '0.12.68'
     id 'pmd'
     id 'jacoco'
-    id 'org.springframework.boot' version '3.5.14'
+    id 'org.springframework.boot' version '3.5.15'
     id 'info.solidsoft.pitest' version '1.15.0'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
     id 'com.github.ben-manes.versions' version '0.53.0'
     id 'org.sonarqube' version '7.2.3.7755'
-    id 'org.owasp.dependencycheck' version '12.2.1'
+    id 'org.owasp.dependencycheck' version '12.2.2'
 }
 
 apply plugin: "info.solidsoft.pitest"
@@ -33,12 +33,12 @@ apply plugin: 'io.spring.dependency-management'
 ext['snakeyaml.version'] = '2.0'
 
 ext {
-    springCloudVersion = '2025.1.1'
+    springCloudVersion = '2025.1.2'
 }
 
 def versions = [
-        junit              : '5.12.2',
-        junitPlatform      : '1.12.2',
+        junit              : '6.1.1',
+        junitPlatform      : '6.1.1',
         lombok             : '1.18.46',
         gradlePitest       : '1.3.0',
         pitest             : '1.22.1',
@@ -56,7 +56,7 @@ mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchAppl
 def jarName = 'am-role-assignment-batch-service.jar'
 
 pmd {
-    toolVersion = '7.23.0'
+    toolVersion = '7.25.0'
     sourceSets = []
 }
 
@@ -136,7 +136,7 @@ jacocoTestReport {
 project.tasks['sonarqube'].dependsOn test, integration, jacocoTestReport
 
 jacoco {
-    toolVersion = "0.8.14"
+    toolVersion = "0.8.15"
 }
 
 pitest {
@@ -250,12 +250,12 @@ dependencies {
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     implementation group: 'javax.inject', name: 'javax.inject', version: '1'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.11'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.12'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.google.guava', name: 'guava', version: '33.6.0-jre'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
-    implementation group: 'io.opentelemetry.instrumentation', name: 'opentelemetry-instrumentation-annotations', version: '2.25.0'
-    implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.8'
+    implementation group: 'io.opentelemetry.instrumentation', name: 'opentelemetry-instrumentation-annotations', version: '2.28.1'
+    implementation group: 'com.microsoft.azure', name: 'applicationinsights-core', version: '3.7.9'
     testImplementation group: 'org.slf4j', name: 'slf4j-api', version: '2.0.18'
     testImplementation group: 'org.springframework.batch', name: 'spring-batch-test'
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: versions.junit
@@ -273,7 +273,7 @@ dependencies {
     testRuntimeOnly group: 'org.junit.jupiter', name: 'junit-jupiter-engine', version: versions.junit
 
     testImplementation group: 'org.pitest', name: 'pitest', version: versions.pitest
-    testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.15.0'
+    testImplementation 'info.solidsoft.gradle.pitest:gradle-pitest-plugin:1.19.0'
     testImplementation 'org.codehaus.sonar-plugins:sonar-pitest-plugin:0.5'
     testImplementation 'com.github.hmcts:fortify-client:1.4.10:all'
     testImplementation group: 'io.rest-assured', name: 'rest-assured', version: versions.rest_assured
@@ -307,7 +307,7 @@ dependencyManagement {
             entry 'jackson-core'
             entry 'jackson-annotations'
         }
-        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.55') {
+        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.56') {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-el'
             entry 'tomcat-embed-websocket'
@@ -315,7 +315,7 @@ dependencyManagement {
     }
 
     imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.14"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.15"
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
