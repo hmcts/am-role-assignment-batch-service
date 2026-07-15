@@ -50,7 +50,7 @@ def versions = [
         rest_assured       : '6.0.0',
         jacksondata        : '2.19.2',
         testcontainers     : '1.21.4',
-        log4JVersion       : '2.25.4'
+        log4JVersion       : '2.25.5'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchApplication'
@@ -315,7 +315,7 @@ dependencyManagement {
             entry 'jackson-core'
             entry 'jackson-annotations'
         }
-        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.56') {
+        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.57') {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-el'
             entry 'tomcat-embed-websocket'
