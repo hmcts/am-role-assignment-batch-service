@@ -11,7 +11,7 @@ buildscript {
 
 plugins {
     id 'application'
-    id 'uk.gov.hmcts.java' version '0.12.68'
+    id 'uk.gov.hmcts.java' version '0.12.70'
     id 'pmd'
     id 'jacoco'
     id 'org.springframework.boot' version '3.5.16'
@@ -44,12 +44,13 @@ def versions = [
         pitest             : '1.22.1',
         reformLogging      : '8.0.0',
         serenity           : '4.3.4',
+        spring             : '6.2.19',
         sonarPitest        : '0.5',
         feign_jackson      : '13.13',
         rest_assured       : '6.0.0',
         jacksondata        : '2.19.2',
         testcontainers     : '1.21.4',
-        log4JVersion       : '2.25.4'
+        log4JVersion       : '2.26.1'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchApplication'
@@ -210,6 +211,13 @@ repositories {
     }
 }
 
+configurations.all {
+    resolutionStrategy.eachDependency { details ->
+        if (details.requested.group == 'org.springframework'){
+            details.useVersion versions.spring
+        }
+    }
+}
 
 dependencies {
     implementation (group: 'org.springframework.boot', name: 'spring-boot-starter-batch')
