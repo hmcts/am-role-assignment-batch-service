@@ -50,7 +50,7 @@ def versions = [
         rest_assured       : '6.0.0',
         jacksondata        : '2.19.2',
         testcontainers     : '1.21.4',
-        log4JVersion       : '2.25.5'
+        log4JVersion       : '2.26.1'
 ]
 
 mainClassName = 'uk.gov.hmcts.reform.roleassignmentbatch.RoleAssignmentBatchApplication'
