@@ -14,7 +14,7 @@ plugins {
     id 'uk.gov.hmcts.java' version '0.12.68'
     id 'pmd'
     id 'jacoco'
-    id 'org.springframework.boot' version '3.5.15'
+    id 'org.springframework.boot' version '3.5.16'
     id 'info.solidsoft.pitest' version '1.15.0'
     id 'io.spring.dependency-management' version '1.1.7'
     id 'java'
@@ -45,7 +45,7 @@ def versions = [
         reformLogging      : '8.0.0',
         serenity           : '4.3.4',
         sonarPitest        : '0.5',
-        feign_jackson      : '13.9.3',
+        feign_jackson      : '13.13',
         rest_assured       : '6.0.0',
         jacksondata        : '2.19.2',
         testcontainers     : '1.21.4',
@@ -250,7 +250,7 @@ dependencies {
 
     implementation group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.13'
     implementation group: 'javax.inject', name: 'javax.inject', version: '1'
-    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.12'
+    implementation group: 'org.postgresql', name: 'postgresql', version: '42.7.13'
     implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: versions.reformLogging
     implementation group: 'com.google.guava', name: 'guava', version: '33.6.0-jre'
     implementation group: 'javax.persistence', name: 'javax.persistence-api', version: '2.2'
@@ -307,7 +307,7 @@ dependencyManagement {
             entry 'jackson-core'
             entry 'jackson-annotations'
         }
-        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.56') {
+        dependencySet(group: 'org.apache.tomcat.embed', version: '10.1.57') {
             entry 'tomcat-embed-core'
             entry 'tomcat-embed-el'
             entry 'tomcat-embed-websocket'
@@ -315,7 +315,7 @@ dependencyManagement {
     }
 
     imports {
-        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.15"
+        mavenBom "org.springframework.boot:spring-boot-dependencies:3.5.16"
         mavenBom "org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
     }
 }
