@@ -33,7 +33,7 @@
       </notes>
       <cve>CVE-2026-66299</cve>
     </suppress>
-      <suppress>
+    <suppress>
         <notes>https://tools.hmcts.net/jira/browse/DTSAM-1382 CVE-2026-54285 opentelemetry-js</notes>
         <cve>CVE-2026-54285</cve>
     </suppress>
@@ -46,4 +46,9 @@
         <cve>CVE-2026-47893</cve>
         <cve>CVE-2026-59280</cve>
     </suppress>
+    <suppress>
+        <notes>https://tools.hmcts.net/jira/browse/DTSAM-1386 CVE-2026-59280 spring security</notes>
+        <cve>CVE-2026-59280</cve>
+    </suppress>
+    
 </suppressions>
