@@ -49,7 +49,7 @@ def versions = [
         feign_jackson      : '13.14',
         rest_assured       : '6.0.1',
         jacksondata        : '2.19.2',
-        testcontainers     : '1.21.4',
+        testcontainers     : '2.0.5',
         log4JVersion       : '2.26.1'
 ]
 
