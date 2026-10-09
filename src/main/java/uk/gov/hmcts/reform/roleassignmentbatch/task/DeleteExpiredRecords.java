@@ -76,26 +76,30 @@ public class DeleteExpiredRecords implements Tasklet {
 
             this.insertIntoRoleAssignmentHistoryTable(rah);
 
-            String numRecordsUpdatedLog = String.format("Updated number of records in History Table : %s",
-                                                        getCountFromHistoryTable() - currentRecordsInHistoryTable);
-            log.info(numRecordsUpdatedLog);
-            Instant endTime = Instant.now();
-            long timeElapsed = Duration.between(startTime, endTime).toMillis();
-            Map<String,Object> templateMap = new HashMap<>();
-            templateMap.put("jobId",jobId);
-            templateMap.put("startTime",startTime);
-            templateMap.put("endTime",endTime);
-            templateMap.put("elapsedTime",timeElapsed);
-            templateMap.put("liveCount",rowsDeleted);
-            templateMap.put("updatedRecordCount",getCountFromHistoryTable() - currentRecordsInHistoryTable);
-            EmailData emailData = EmailData
-                    .builder()
-                    .runId(jobId)
-                    .emailSubject(DELETE_EXPIRED_RECORD_JOB_STATUS)
-                    .module(DELETE_EXPIRED_JOB)
-                    .templateMap(templateMap)
-                    .build();
-            emailService.sendEmail(emailData);
+            // Recount and send email
+            if (emailService.isMailEnabled()) {
+                Integer countFromHistoryTable = getCountFromHistoryTable();
+                String numRecordsUpdatedLog = String.format("Updated number of records in History Table : %s",
+                        countFromHistoryTable - currentRecordsInHistoryTable);
+                log.info(numRecordsUpdatedLog);
+                Instant endTime = Instant.now();
+                long timeElapsed = Duration.between(startTime, endTime).toMillis();
+                Map<String, Object> templateMap = new HashMap<>();
+                templateMap.put("jobId", jobId);
+                templateMap.put("startTime", startTime);
+                templateMap.put("endTime", endTime);
+                templateMap.put("elapsedTime", timeElapsed);
+                templateMap.put("liveCount", rowsDeleted);
+                templateMap.put("updatedRecordCount", countFromHistoryTable - currentRecordsInHistoryTable);
+                EmailData emailData = EmailData
+                        .builder()
+                        .runId(jobId)
+                        .emailSubject(DELETE_EXPIRED_RECORD_JOB_STATUS)
+                        .module(DELETE_EXPIRED_JOB)
+                        .templateMap(templateMap)
+                        .build();
+                emailService.sendEmail(emailData);
+            }
         } catch (DataAccessException e) {
             log.info(String.format(" DataAccessException %s", e.getMessage()));
         } catch (Exception e) {
