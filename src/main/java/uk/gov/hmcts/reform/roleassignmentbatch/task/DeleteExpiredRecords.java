@@ -56,7 +56,7 @@ public class DeleteExpiredRecords implements Tasklet {
         log.info("Delete Expired records task starts::");
         Instant startTime = Instant.now();
         String jobId = contribution.getStepExecution().getJobExecution().getId().toString();
-        int currentRecordsInHistoryTable = getCountFromHistoryTable();
+        int currentRecordsInHistoryTable = emailService.isMailEnabled() ? getCountFromHistoryTable() : 0;
         try {
             List<RoleAssignmentHistory> rah = this.getLiveRecordsFromHistoryTable();
             String historyLog = String.format("Retrieve History records whose End Time is less than current time."
