@@ -36,6 +36,9 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.ArgumentMatchers.eq;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 @RunWith(MockitoJUnitRunner.class)
 class DeleteExpiredRecordsTest {
@@ -64,7 +67,9 @@ class DeleteExpiredRecordsTest {
     private DeleteExpiredRecords sut = new DeleteExpiredRecords(emailService, jdbcTemplate, 5);
 
     @Test
-    void execute() throws IOException {
+    void execute_mailEnabled() throws IOException {
+
+        // GIVEN
         Mockito.when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class)))
                .thenReturn(400);
 
@@ -77,7 +82,40 @@ class DeleteExpiredRecordsTest {
         Mockito.when(stepContribution.getStepExecution().getJobExecution()).thenReturn(jobExecution);
         Mockito.when(stepContribution.getStepExecution().getJobExecution().getId()).thenReturn(Long.valueOf(1));
 
-        Assertions.assertEquals(RepeatStatus.FINISHED, sut.execute(stepContribution, chunkContext));
+        Mockito.when(emailService.isMailEnabled()).thenReturn(true);
+
+        // WHEN
+        RepeatStatus result = sut.execute(stepContribution, chunkContext);
+
+        // THEN
+        Assertions.assertEquals(RepeatStatus.FINISHED, result);
+        verify(emailService, times(1)).sendEmail(any());
+    }
+
+    @Test
+    void execute_mailNotEnabled() throws IOException {
+
+        // GIVEN
+        Mockito.when(jdbcTemplate.queryForObject(anyString(), eq(Integer.class)))
+            .thenReturn(400);
+
+        List<RoleAssignmentHistory> list = new ArrayList<>();
+        list.add(TestDataBuilder.buildRoleAssignmentHistory());
+
+        Mockito.when(jdbcTemplate.query(anyString(), ArgumentMatchers.<ResultSetExtractor<Object>>any()))
+            .thenReturn(list);
+        Mockito.when(stepContribution.getStepExecution()).thenReturn(stepExecution);
+        Mockito.when(stepContribution.getStepExecution().getJobExecution()).thenReturn(jobExecution);
+        Mockito.when(stepContribution.getStepExecution().getJobExecution().getId()).thenReturn(Long.valueOf(1));
+
+        Mockito.when(emailService.isMailEnabled()).thenReturn(false);
+
+        // WHEN
+        RepeatStatus result = sut.execute(stepContribution, chunkContext);
+
+        // THEN
+        Assertions.assertEquals(RepeatStatus.FINISHED, result);
+        verify(emailService, never()).sendEmail(any());
     }
 
     @Test
