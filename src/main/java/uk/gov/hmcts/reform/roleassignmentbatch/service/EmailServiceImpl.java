@@ -57,6 +57,11 @@ public class EmailServiceImpl implements EmailService {
         this.environmentName = environmentName;
     }
 
+    @Override
+    public boolean isMailEnabled() {
+        return mailEnabled;
+    }
+
     /**
      * Generic Method is used to send mail notification to the caller.
      *
