@@ -5,5 +5,6 @@ import uk.gov.hmcts.reform.roleassignmentbatch.domain.model.EmailData;
 
 public interface EmailService {
     public Response sendEmail(EmailData emailData);
-
+    
+    public boolean isMailEnabled();
 }

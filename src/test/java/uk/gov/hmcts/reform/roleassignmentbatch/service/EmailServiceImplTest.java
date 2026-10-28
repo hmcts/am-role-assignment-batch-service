@@ -6,7 +6,7 @@ import com.sendgrid.Response;
 import com.sendgrid.SendGrid;
 import com.sendgrid.helpers.mail.Mail;
 import com.sendgrid.helpers.mail.objects.Email;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Strings;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,6 +29,7 @@ import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -72,7 +73,7 @@ class EmailServiceImplTest {
     private ITemplateEngine templateEngine;
 
     @Autowired
-    private EmailServiceImpl sut;
+    private EmailServiceImpl sutWithMailEnabled;
 
     @Nested
     @TestPropertySource(properties = {
@@ -81,7 +82,7 @@ class EmailServiceImplTest {
     class WhenMailDisabled {
 
         @Autowired
-        private EmailServiceImpl sut;
+        private EmailServiceImpl sutWithMailDisabled;
 
         @Test
         void sendEmail_notEnabled() throws IOException {
@@ -92,10 +93,21 @@ class EmailServiceImplTest {
                 .build();
 
             // WHEN
-            sut.sendEmail(emailData);
+            sutWithMailDisabled.sendEmail(emailData);
 
             // THEN
             verify(sendGrid, never()).api(any());
+
+        }
+
+        @Test
+        void isMailEnabled_notEnabled() {
+
+            // WHEN
+            boolean result = sutWithMailDisabled.isMailEnabled();
+
+            // THEN
+            assertFalse(result);
 
         }
 
@@ -120,7 +132,7 @@ class EmailServiceImplTest {
         when(sendGrid.api(any())).thenReturn(new Response(HttpStatus.OK.value(), null, null));
 
         // WHEN
-        Response response = sut.sendEmail(emailData);
+        Response response = sutWithMailEnabled.sendEmail(emailData);
 
         // THEN
         assertEquals(HttpStatus.OK.value(), response.getStatusCode());
@@ -149,9 +161,9 @@ class EmailServiceImplTest {
         tos.forEach(email -> assertTrue(List.of(MAIL_TO_1, MAIL_TO_2).contains(email.getEmail())));
         // MAIL SUBJECT
         // ... must contain ENV
-        assertTrue(StringUtils.containsIgnoreCase(mail.getSubject(), BATCH_ENV));
+        assertTrue(Strings.CI.contains(mail.getSubject(), BATCH_ENV));
         // ... must contain original subject
-        assertTrue(StringUtils.containsIgnoreCase(mail.getSubject(), TEST_SUBJECT));
+        assertTrue(Strings.CI.contains(mail.getSubject(), TEST_SUBJECT));
         // MAIL CONTENT
         assertEquals(TEST_CONTENT, mail.getContent().get(0).getValue());
 
@@ -170,10 +182,21 @@ class EmailServiceImplTest {
         when(sendGrid.api(any())).thenReturn(new Response(HttpStatus.BAD_REQUEST.value(), null, null));
 
         // WHEN
-        Response response = sut.sendEmail(emailData);
+        Response response = sutWithMailEnabled.sendEmail(emailData);
 
         // THEN
         assertEquals(HttpStatus.BAD_REQUEST.value(), response.getStatusCode());
+    }
+
+    @Test
+    void isMailEnabled_enabled() {
+
+        // WHEN
+        boolean result = sutWithMailEnabled.isMailEnabled();
+
+        // THEN
+        assertTrue(result);
+
     }
 
 }
